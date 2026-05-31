@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Playground | Hongyue Shen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="cursor-dot" aria-hidden="true"></div>
+    <header class="site-header">
+      <a class="site-logo" href="index.html">HONGYUE SHEN</a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-label="Open navigation"><span></span><span></span></button>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="work.html">Work</a><a class="active" href="playground.html">Playground</a><a href="about.html">About</a>
+        <a class="nav-contact" href="mailto:hongyueshn@gmail.com">Let's connect</a>
+      </nav>
+    </header>
+    <main>
+      <section class="page-hero">
+        <div class="letter-matrix page-matrix" data-hidden="STAY CURIOUS" data-seed="play"></div>
+        <p class="eyebrow">02 · Playground</p>
+        <h1>Room for <em>curiosity.</em></h1>
+        <p class="page-intro">An evolving collection of experiments, motion studies, and side explorations.</p>
+      </section>
+      <section class="section">
+        <div class="play-grid">
+          <button class="play-item play-wide reveal" type="button" data-lightbox="pdf_preview/portfolio_04.jpg" data-caption="SCAPE · Logo motion study">
+            <img src="pdf_preview/portfolio_04.jpg" alt="SCAPE logo motion study still" /><span>Logo motion study</span>
+          </button>
+          <button class="play-item reveal" type="button" data-lightbox="pdf_preview/portfolio_25.jpg" data-caption="Hands Across Borders · Editorial study">
+            <img src="pdf_preview/portfolio_25.jpg" alt="Hands Across Borders editorial study" /><span>Editorial study</span>
+          </button>
+          <button class="play-item play-placeholder reveal" type="button" data-placeholder-caption="Motion experiment placeholder">
+            <span class="placeholder-mark">+</span><span>Motion experiment · Placeholder</span>
+          </button>
+          <button class="play-item reveal" type="button" data-lightbox="pdf_preview/portfolio_30.jpg" data-caption="The New Frontiers · Spatial visualization">
+            <img src="pdf_preview/portfolio_30.jpg" alt="The New Frontiers spatial visualization" /><span>AI-assisted worldbuilding</span>
+          </button>
+          <button class="play-item play-wide reveal" type="button" data-lightbox="pdf_preview/portfolio_15.jpg" data-caption="Luminous Fair · Printed matter">
+            <img src="pdf_preview/portfolio_15.jpg" alt="Luminous Fair tote bag applications" /><span>Printed matter</span>
+          </button>
+          <button class="play-item play-placeholder reveal" type="button" data-placeholder-caption="Industrial design archive placeholder">
+            <span class="placeholder-mark">+</span><span>Industrial design archive · Placeholder</span>
+          </button>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <div class="footer-matrix letter-matrix" data-hidden="LET'S CONNECT" data-seed="connect"></div>
+      <p class="eyebrow">Have a project, an opportunity, or a thought?</p><a class="footer-title" href="mailto:hongyueshn@gmail.com">Let's connect.</a>
+      <div class="footer-bottom"><span>© <span data-year></span> Hongyue Shen</span><div><a href="https://www.behance.net/HongyueShen" target="_blank" rel="noreferrer">Behance</a><a href="mailto:hongyueshn@gmail.com">Email</a></div></div>
+    </footer>
+    <div class="lightbox" aria-hidden="true"><button class="lightbox-close" type="button" aria-label="Close preview">×</button><img alt="" /><p></p></div>
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Work | Hongyue Shen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="cursor-dot" aria-hidden="true"></div>
+    <header class="site-header">
+      <a class="site-logo" href="index.html">HONGYUE SHEN</a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-label="Open navigation"><span></span><span></span></button>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="active" href="work.html">Work</a>
+        <a href="playground.html">Playground</a>
+        <a href="about.html">About</a>
+        <a class="nav-contact" href="mailto:hongyueshn@gmail.com">Let's connect</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="page-hero">
+        <div class="letter-matrix page-matrix" data-hidden="SELECTED STORIES" data-seed="work"></div>
+        <p class="eyebrow">01 · Work</p>
+        <h1>Selected <em>stories</em><br />and visual systems.</h1>
+        <p class="page-intro">A curated mix of identity, campaign, editorial, digital, and speculative work.</p>
+      </section>
+
+      <section class="section work-index-section">
+        <div class="filter-bar reveal" role="group" aria-label="Filter projects">
+          <button class="filter-button active" type="button" data-filter="all">All</button>
+          <button class="filter-button" type="button" data-filter="identity">Identity</button>
+          <button class="filter-button" type="button" data-filter="campaign">Campaign</button>
+          <button class="filter-button" type="button" data-filter="editorial">Editorial</button>
+          <button class="filter-button" type="button" data-filter="digital">Digital</button>
+        </div>
+
+        <div class="work-grid">
+          <a class="work-tile reveal" href="project.html?slug=scape" data-category="identity digital">
+            <div class="work-tile-image"><img src="pdf_preview/portfolio_10.jpg" alt="SCAPE identity storefront" /></div>
+            <div><span>001 · 2025</span><h2>SCAPE</h2><p>Brand Identity · Digital & Print</p></div>
+          </a>
+          <a class="work-tile reveal" href="project.html?slug=luminous-fair" data-category="campaign identity">
+            <div class="work-tile-image"><img src="pdf_preview/portfolio_18.jpg" alt="Luminous Fair event" /></div>
+            <div><span>002 · 2025</span><h2>Luminous Fair</h2><p>Campaign Visuals · Event Experience</p></div>
+          </a>
+          <a class="work-tile reveal" href="project.html?slug=hands-across-borders" data-category="editorial">
+            <div class="work-tile-image"><img src="pdf_preview/portfolio_23.jpg" alt="Hands Across Borders visual" /></div>
+            <div><span>003 · 2025</span><h2>Hands Across Borders</h2><p>Editorial Design · Photography Direction</p></div>
+          </a>
+          <a class="work-tile reveal" href="project.html?slug=new-frontiers" data-category="identity campaign digital">
+            <div class="work-tile-image"><img src="pdf_preview/portfolio_27.jpg" alt="The New Frontiers concept" /></div>
+            <div><span>004 · 2025</span><h2>The New Frontiers</h2><p>Brand Identity · AI Visualization</p></div>
+          </a>
+        </div>
+
+        <div class="practice-heading reveal">
+          <p class="eyebrow">Professional Practice</p>
+          <h2>Applied design in context.</h2>
+        </div>
+        <a class="practice-card reveal" href="project.html?slug=dxomark" data-category="campaign digital">
+          <div>
+            <span class="practice-number">005</span>
+            <p class="eyebrow">Jan 2026 – Present</p>
+            <h2>DXOMARK</h2>
+            <p>Brand systems, campaigns, social content, presentations, and digital concepts.</p>
+            <span class="text-link">View professional work <span>→</span></span>
+          </div>
+          <img src="pdf_preview/portfolio_32.jpg" alt="DXOMARK professional visual design work" />
+        </a>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-matrix letter-matrix" data-hidden="LET'S CONNECT" data-seed="connect"></div>
+      <p class="eyebrow">Have a project, an opportunity, or a thought?</p>
+      <a class="footer-title" href="mailto:hongyueshn@gmail.com">Let's connect.</a>
+      <div class="footer-bottom"><span>© <span data-year></span> Hongyue Shen</span><div><a href="https://www.behance.net/HongyueShen" target="_blank" rel="noreferrer">Behance</a><a href="mailto:hongyueshn@gmail.com">Email</a></div></div>
+    </footer>
+    <script src="script.js"></script>
+  </body>
+</html>
