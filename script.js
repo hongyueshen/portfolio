@@ -9,40 +9,40 @@ function seededRandom(seed) {
 }
 
 function buildMatrix(matrix) {
-  const phrase = (matrix.dataset.hidden || "STAY CURIOUS").toUpperCase();
-  const random = seededRandom(matrix.dataset.seed || phrase);
-  const width = Math.max(16, Math.floor(matrix.clientWidth / 22));
+  const phrases = (matrix.dataset.hidden || "STAY CURIOUS").toUpperCase().split("|");
+  const layouts = (matrix.dataset.hiddenLayout || "")
+    .split(";")
+    .filter(Boolean)
+    .map((layout) => layout.split(",").map(Number));
+  const random = seededRandom(matrix.dataset.seed || phrases.join(""));
+  const width = Math.max(24, Math.floor(matrix.clientWidth / 22));
   const height = Math.max(10, Math.ceil(matrix.clientHeight / 27));
   const total = width * height;
   const letters = Array.from({ length: total }, () => alphabet[Math.floor(random() * alphabet.length)]);
-  const compactPhrase = phrase.replace(/ /g, "");
-  const phraseWidth = phrase.length;
-  const rowRatio = Number.parseFloat(matrix.dataset.hiddenRow || "0.5");
-  const colRatio = Number.parseFloat(matrix.dataset.hiddenCol || "0.5");
-  const startRow = Math.max(1, Math.min(height - 2, Math.round((height - 1) * rowRatio)));
-  const startCol = Math.max(1, Math.min(width - phraseWidth - 1, Math.round((width - phraseWidth) * colRatio)));
   const hiddenIndexes = new Set();
 
   matrix.style.setProperty("--matrix-cols", width);
-  let phraseIndex = 0;
-  for (let index = 0; index < phrase.length; index += 1) {
-    const char = phrase[index];
-    if (char === " ") {
-      const position = startRow * width + startCol + phraseIndex;
+  phrases.forEach((phrase, phraseOrder) => {
+    const [customRow, customCol] = layouts[phraseOrder] || [];
+    const defaultRow = phrases.length === 1
+      ? Number.parseFloat(matrix.dataset.hiddenRow || "0.5")
+      : (phraseOrder + 1) / (phrases.length + 1);
+    const rowRatio = Number.isFinite(customRow) ? customRow : defaultRow;
+    const colRatio = Number.isFinite(customCol)
+      ? customCol
+      : Number.parseFloat(matrix.dataset.hiddenCol || "0.5");
+    const startRow = Math.max(1, Math.min(height - 2, Math.round((height - 1) * rowRatio)));
+    const availableColumns = Math.max(1, width - phrase.length - 1);
+    const startCol = Math.max(1, Math.min(availableColumns, Math.round(availableColumns * colRatio)));
+
+    for (let index = 0; index < phrase.length; index += 1) {
+      const position = startRow * width + startCol + index;
       if (position < total) {
-        letters[position] = "";
+        letters[position] = phrase[index] === " " ? "" : phrase[index];
         hiddenIndexes.add(position);
       }
-      phraseIndex += 1;
-      continue;
     }
-    const position = startRow * width + startCol + phraseIndex;
-    if (position < total) {
-      letters[position] = char;
-      hiddenIndexes.add(position);
-    }
-    phraseIndex += 1;
-  }
+  });
 
   matrix.innerHTML = letters
     .map((letter, index) => `<span class="matrix-letter${hiddenIndexes.has(index) ? " hidden-letter" : ""}" data-index="${index}">${letter || "&nbsp;"}</span>`)
@@ -50,14 +50,18 @@ function buildMatrix(matrix) {
 
   if (matrix.dataset.interactive === "true") {
     const spans = [...matrix.querySelectorAll(".matrix-letter")];
-    matrix.addEventListener("pointermove", (event) => {
+    if (matrix.matrixPointerMove) matrix.removeEventListener("pointermove", matrix.matrixPointerMove);
+    if (matrix.matrixPointerLeave) matrix.removeEventListener("pointerleave", matrix.matrixPointerLeave);
+    matrix.matrixPointerMove = (event) => {
       spans.forEach((span) => {
         const rect = span.getBoundingClientRect();
         const distance = Math.hypot(event.clientX - (rect.left + rect.width / 2), event.clientY - (rect.top + rect.height / 2));
         span.classList.toggle("is-near", distance < 105);
       });
-    });
-    matrix.addEventListener("pointerleave", () => spans.forEach((span) => span.classList.remove("is-near")));
+    };
+    matrix.matrixPointerLeave = () => spans.forEach((span) => span.classList.remove("is-near"));
+    matrix.addEventListener("pointermove", matrix.matrixPointerMove);
+    matrix.addEventListener("pointerleave", matrix.matrixPointerLeave);
   }
 }
 
@@ -66,65 +70,65 @@ const projectData = {
     number: "001",
     title: "SCAPE",
     subtitle: "Into the flow",
-    category: "Brand Identity · Digital & Print Assets · Advertising",
+    type: "Hospitality Branding",
+    services: "Art Direction · Brand Identity · Digital & Print Assets",
     year: "2025",
-    role: "Art Direction · Brand Identity",
-    lead: "pdf_preview/portfolio_10.jpg",
+    lead: "assets/work/scape08.jpg",
     context: "SCAPE is a hospitality identity created around emotional immersion and the quiet pleasure of escape. The project explores how a flexible visual system can move from atmosphere to application without losing its sense of calm.",
     concept: "A continuous wave becomes the central gesture: an invitation to move, pause, and return to flow. The identity extends through typography, color, editorial rhythm, digital touchpoints, and spatial applications.",
-    images: ["portfolio_04.jpg","portfolio_05.jpg","portfolio_06.jpg","portfolio_07.jpg","portfolio_08.jpg","portfolio_09.jpg","portfolio_10.jpg"],
+    images: ["assets/work/scape02.jpg","assets/work/scape03.jpg","assets/work/scape04.jpg","assets/work/scape05.jpg","assets/work/scape06.jpg","assets/work/scape07.jpg","assets/work/scape08.jpg"],
     next: "luminous-fair"
   },
   "luminous-fair": {
     number: "002",
     title: "Luminous Fair",
-    subtitle: "上灯游园",
-    category: "Campaign Visuals · Event Experience · Environmental Graphics",
+    subtitle: "&#19978;&#28783;&#28216;&#22253;",
+    type: "Cultural Event Campaign",
+    services: "Art Direction · Campaign Visuals · Environmental Graphics",
     year: "2025",
-    role: "Art Direction · Campaign Design",
-    lead: "pdf_preview/portfolio_18.jpg",
+    lead: "assets/work/deng08.jpg",
     context: "Luminous Fair is a contemporary lantern festival concept celebrating local culture through food, light, and community gathering. It brings a familiar seasonal ritual into a vivid and welcoming visual world.",
     concept: "Lanterns, folk motifs, and playful graphic forms are reduced into a modular vocabulary. A warm palette and bold compositions allow the system to travel across posters, tote bags, wayfinding, and the event space.",
-    images: ["portfolio_12.jpg","portfolio_13.jpg","portfolio_14.jpg","portfolio_15.jpg","portfolio_16.jpg","portfolio_17.jpg","portfolio_18.jpg"],
+    images: ["assets/work/deng02.jpg","assets/work/deng03.jpg","assets/work/deng04.jpg","assets/work/deng05.jpg","assets/work/deng06.jpg","assets/work/deng07.jpg","assets/work/deng08.jpg"],
     next: "hands-across-borders"
   },
   "hands-across-borders": {
     number: "003",
     title: "Hands Across Borders",
     subtitle: "Connect",
-    category: "Editorial Design · Photography Direction · Visual Storytelling",
+    type: "Editorial Storytelling",
+    services: "Editorial Design · Photography Direction · Visual Storytelling",
     year: "2025",
-    role: "Editorial Design · Art Direction",
-    lead: "pdf_preview/portfolio_23.jpg",
+    lead: "assets/work/hands-hero.jpg",
     context: "Hands Across Borders is an editorial narrative about gestures as a language beyond borders. It observes how hands can communicate care, disagreement, memory, support, and connection before words arrive.",
     concept: "Threads, shadows, handwritten notes, and staged photography build a tactile sequence. The editorial system alternates between restraint and interruption, allowing each gesture to carry its own emotional weight.",
-    images: ["portfolio_20.jpg","portfolio_21.jpg","portfolio_22.jpg","portfolio_23.jpg","portfolio_24.jpg","portfolio_25.jpg"],
+    images: ["assets/work/hands-hero.jpg","assets/work/hands02.jpg","assets/work/hands03.jpg","assets/work/hands04.jpg","assets/work/hands05.jpg","assets/work/hands06.jpg","assets/work/hands07.jpg"],
     next: "new-frontiers"
   },
   "new-frontiers": {
     number: "004",
     title: "The New Frontiers",
     subtitle: "Ever unknown",
-    category: "Brand Identity · Campaign Visuals · AI Visualization",
+    type: "Speculative Hospitality Concept",
+    services: "Art Direction · Brand Identity · AI Visualization",
     year: "2025",
-    role: "Art Direction · Concept Development",
-    lead: "pdf_preview/portfolio_27.jpg",
+    lead: "assets/work/frontier-hero.jpg",
     context: "As travel experiences become increasingly standardized, hospitality brands risk losing emotional connection and a sense of discovery. The New Frontiers imagines a future-facing travel experience shaped by immersion and wonder.",
     concept: "Three speculative destinations become a connected visual universe. AI-assisted worldbuilding supports the art direction, while a celestial graphic language gives the imagined experience a coherent identity.",
-    images: ["portfolio_27.jpg","portfolio_28.jpg","portfolio_29.jpg","portfolio_30.jpg"],
+    images: ["assets/work/frontier-hero.jpg","assets/work/frontier02.jpg","assets/work/frontier03.jpg","assets/work/frontier04.jpg","assets/work/frontier05.jpg"],
     next: "dxomark"
   },
   dxomark: {
     number: "005",
     title: "DXOMARK",
     subtitle: "Professional practice",
-    category: "Brand Systems · Campaigns · Social Media · Digital Design",
+    type: "Professional Practice",
+    services: "Brand Systems · Campaign Visuals · Digital Design",
     year: "2026",
-    role: "Brand Designer · Jan 2026 – Present",
     lead: "pdf_preview/portfolio_32.jpg",
     context: "At DXOMARK, I contribute to cross-platform B2B and B2C communication across digital channels. This selection brings together work produced within an established brand context and adapted to different audiences and formats.",
     concept: "The practice focuses on translating technical topics into accessible and visually engaging communication. The work spans social media, event campaigns, motion content, presentation systems, and homepage concepts.",
-    images: ["portfolio_32.jpg","portfolio_33.jpg"],
+    images: ["pdf_preview/portfolio_32.jpg","pdf_preview/portfolio_33.jpg"],
     next: "scape"
   }
 };
@@ -138,12 +142,15 @@ function renderProject() {
   document.title = `${project.title} | Hongyue Shen`;
   root.innerHTML = `
     <section class="project-hero">
-      <a class="project-back text-link text-link-muted" href="work.html"><span>←</span> All work</a>
-      <div class="project-kicker"><p class="eyebrow">${project.number} · ${project.subtitle}</p></div>
+      <div class="project-hero-top">
+        <a class="project-back text-link text-link-muted" href="work.html"><span>&larr;</span> All work</a>
+        <p class="project-number">${project.number}</p>
+      </div>
+      <p class="eyebrow">${project.subtitle}</p>
       <h1>${project.title}</h1>
       <div class="project-meta">
-        <p>Scope<b>${project.category}</b></p>
-        <p>Role<b>${project.role}</b></p>
+        <p>Type<b>${project.type}</b></p>
+        <p>Services<b>${project.services}</b></p>
         <p>Year<b>${project.year}</b></p>
       </div>
     </section>
@@ -154,10 +161,10 @@ function renderProject() {
     </section>
     <section class="project-gallery">
       <div class="gallery-grid">
-        ${project.images.map((image, index) => `<button class="gallery-item reveal" type="button" data-lightbox="pdf_preview/${image}" data-caption="${project.title} · Visual ${String(index + 1).padStart(2,"0")}"><img src="pdf_preview/${image}" alt="${project.title} visual ${index + 1}" loading="lazy" /></button>`).join("")}
+        ${project.images.map((image, index) => `<button class="gallery-item reveal" type="button" data-lightbox="${image}" data-caption="${project.title} · Visual ${String(index + 1).padStart(2,"0")}"><img src="${image}" alt="${project.title} visual ${index + 1}" loading="lazy" /></button>`).join("")}
       </div>
     </section>
-    <a class="project-next" href="project.html?slug=${project.next}"><b>Next project</b><span>${next.title} →</span></a>`;
+    <a class="project-next" href="project.html?slug=${project.next}"><b>Next project</b><span>${next.title} &rarr;</span></a>`;
 }
 
 function setupLightbox() {
