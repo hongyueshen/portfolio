@@ -11,19 +11,28 @@ function seededRandom(seed) {
 function buildMatrix(matrix) {
   const phrase = (matrix.dataset.hidden || "STAY CURIOUS").toUpperCase();
   const random = seededRandom(matrix.dataset.seed || phrase);
-  const width = Math.max(16, Math.floor(matrix.clientWidth / 21));
-  const height = Math.max(10, Math.ceil(matrix.clientHeight / 30));
+  const width = Math.max(16, Math.floor(matrix.clientWidth / 22));
+  const height = Math.max(10, Math.ceil(matrix.clientHeight / 27));
   const total = width * height;
   const letters = Array.from({ length: total }, () => alphabet[Math.floor(random() * alphabet.length)]);
   const compactPhrase = phrase.replace(/ /g, "");
-  const startRow = Math.max(2, Math.floor(height * 0.48));
-  const startCol = Math.max(1, Math.floor((width - compactPhrase.length) / 2));
+  const phraseWidth = phrase.length;
+  const rowRatio = Number.parseFloat(matrix.dataset.hiddenRow || "0.5");
+  const colRatio = Number.parseFloat(matrix.dataset.hiddenCol || "0.5");
+  const startRow = Math.max(1, Math.min(height - 2, Math.round((height - 1) * rowRatio)));
+  const startCol = Math.max(1, Math.min(width - phraseWidth - 1, Math.round((width - phraseWidth) * colRatio)));
   const hiddenIndexes = new Set();
 
+  matrix.style.setProperty("--matrix-cols", width);
   let phraseIndex = 0;
   for (let index = 0; index < phrase.length; index += 1) {
     const char = phrase[index];
     if (char === " ") {
+      const position = startRow * width + startCol + phraseIndex;
+      if (position < total) {
+        letters[position] = "";
+        hiddenIndexes.add(position);
+      }
       phraseIndex += 1;
       continue;
     }
@@ -36,7 +45,7 @@ function buildMatrix(matrix) {
   }
 
   matrix.innerHTML = letters
-    .map((letter, index) => `<span class="matrix-letter${hiddenIndexes.has(index) ? " hidden-letter" : ""}" data-index="${index}">${letter}</span>`)
+    .map((letter, index) => `<span class="matrix-letter${hiddenIndexes.has(index) ? " hidden-letter" : ""}" data-index="${index}">${letter || "&nbsp;"}</span>`)
     .join("");
 
   if (matrix.dataset.interactive === "true") {
@@ -129,7 +138,8 @@ function renderProject() {
   document.title = `${project.title} | Hongyue Shen`;
   root.innerHTML = `
     <section class="project-hero">
-      <div class="project-kicker"><p class="eyebrow">${project.number} · ${project.subtitle}</p><a class="text-link text-link-muted" href="work.html">All work <span>×</span></a></div>
+      <a class="project-back text-link text-link-muted" href="work.html"><span>←</span> All work</a>
+      <div class="project-kicker"><p class="eyebrow">${project.number} · ${project.subtitle}</p></div>
       <h1>${project.title}</h1>
       <div class="project-meta">
         <p>Scope<b>${project.category}</b></p>
@@ -222,7 +232,14 @@ function setupReveals() {
       }
     });
   }, { threshold: .11 });
-  document.querySelectorAll(".reveal").forEach((item) => observer.observe(item));
+  document.querySelectorAll(".reveal").forEach((item) => {
+    const rect = item.getBoundingClientRect();
+    if (rect.top < window.innerHeight * .96 && rect.bottom > 0) {
+      item.classList.add("visible");
+    } else {
+      observer.observe(item);
+    }
+  });
 }
 
 renderProject();
