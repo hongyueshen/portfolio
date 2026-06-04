@@ -34,13 +34,13 @@
 
       <section class="section playground-section">
         <div class="play-masonry">
-          <button class="play-card play-card-large reveal" type="button" data-play-target="one-third-life">
+          <button class="play-card play-card-large play-card-contain reveal" type="button" data-play-target="one-third-life">
             <img src="assets/playground/one-third-life-thumb.png" alt="1/3life zine visual" />
-            <span>1/3life</span>
+            <span>1/3 of life</span>
           </button>
-          <button class="play-card play-card-tall reveal" type="button" data-play-target="living-land">
+          <button class="play-card play-card-tall play-card-contain reveal" type="button" data-play-target="living-land">
             <video muted loop playsinline preload="metadata" src="assets/video/living-land-foundation.mp4"></video>
-            <span>Living Land Foundation</span>
+            <span>Diana / Living Land</span>
           </button>
           <button class="play-card play-card-wide reveal" type="button" data-play-target="script-murder">
             <video muted loop playsinline preload="metadata" src="assets/video/script-murder-360.mp4"></video>
@@ -49,10 +49,6 @@
           <button class="play-card play-card-coffee reveal" type="button" data-play-target="coffee-map">
             <img src="assets/playground/coffee-comparison.png" alt="Coffee in Shanghai information design board" />
             <span>Coffee in Shanghai</span>
-          </button>
-          <button class="play-card play-card-silknet reveal" type="button" data-play-target="silknet">
-            <img src="assets/playground/silknet-thumb.png" alt="Silknet Sympathy sculpture render" />
-            <span>Silknet Sympathy</span>
           </button>
         </div>
       </section>
@@ -72,7 +68,7 @@
         <article class="play-panel" data-play-panel="one-third-life">
           <div class="play-panel-copy">
             <p class="eyebrow">Zine / Editorial experiment</p>
-            <h2>1/3life</h2>
+            <h2>1/3 of life</h2>
             <p>An online zine experiment that treats reading as a spatial rhythm: pages, pauses, and gestures unfold as a compact narrative system.</p>
             <a class="text-link" href="https://heyzine.com/flip-book/0ad738428e.html" target="_blank" rel="noreferrer">Open full reader <span>&rarr;</span></a>
           </div>
@@ -84,11 +80,11 @@
         <article class="play-panel" data-play-panel="living-land">
           <div class="play-panel-copy">
             <p class="eyebrow">Motion study / Visual research</p>
-            <h2>Living Land Foundation</h2>
+            <h2>Diana / Living Land</h2>
             <p>A moving-image study around elegance, public memory, and editorial restraint, using Lady Diana as a visual reference for softness under scrutiny.</p>
-            <a class="text-link" href="https://www.figma.com/deck/Ug8iYjNfBeLecBtIgGdKaW" target="_blank" rel="noreferrer">View research deck <span>&rarr;</span></a>
+            <a class="text-link" href="assets/playground/diana-living-land.pdf" target="_blank" rel="noreferrer">Open explanation PDF <span>&rarr;</span></a>
           </div>
-          <div class="play-panel-media">
+          <div class="play-panel-media living-video-frame">
             <video controls playsinline preload="metadata" src="assets/video/living-land-foundation.mp4"></video>
           </div>
         </article>
@@ -101,14 +97,7 @@
             <p class="play-hint">Drag inside the scene to look around. Use scroll or trackpad to zoom.</p>
           </div>
           <div class="play-panel-media panorama-frame">
-            <video id="script-murder-video" src="assets/video/script-murder-360.mp4" loop playsinline preload="metadata" crossorigin="anonymous"></video>
-            <a-scene embedded vr-mode-ui="enabled: false" renderer="antialias: true; colorManagement: true">
-              <a-assets>
-                <video id="script-murder-sphere-source" src="assets/video/script-murder-360.mp4" loop playsinline preload="metadata" crossorigin="anonymous"></video>
-              </a-assets>
-              <a-videosphere src="#script-murder-sphere-source" rotation="0 -90 0"></a-videosphere>
-              <a-camera look-controls="reverseMouseDrag: false" wasd-controls-enabled="false" zoom="1"></a-camera>
-            </a-scene>
+            <video id="script-murder-video" src="assets/video/script-murder-360.mp4" controls loop playsinline preload="metadata" crossorigin="anonymous"></video>
           </div>
         </article>
 
@@ -123,27 +112,14 @@
             <div class="coffee-stage" tabindex="0" aria-label="Scrollable Coffee in Shanghai board">
               <div class="coffee-board">
                 <img src="assets/playground/coffee-comparison.png" alt="Coffee in Shanghai full information design board" />
-                <span class="coffee-module" style="--x: 5%; --y: 30%;">History & translations</span>
-                <span class="coffee-module" style="--x: 22%; --y: 72%;">Ads, products, attitudes</span>
-                <span class="coffee-module" style="--x: 42%; --y: 34%;">Shanghai map & shop data</span>
-                <span class="coffee-module" style="--x: 58%; --y: 18%;">Age, place, and habits</span>
-                <span class="coffee-module" style="--x: 74%; --y: 48%;">Cafe as social space</span>
-                <span class="coffee-module" style="--x: 89%; --y: 30%;">Reasons, rituals, time</span>
+                <div class="coffee-svg-strip" aria-hidden="true">
+                  <img class="coffee-svg-layer" src="assets/playground/cafe_1.svg" alt="" loading="lazy" />
+                  <img class="coffee-svg-layer" src="assets/playground/cafe_2.svg" alt="" loading="lazy" />
+                  <img class="coffee-svg-layer" src="assets/playground/cafe_3.svg" alt="" loading="lazy" />
+                  <img class="coffee-svg-layer" src="assets/playground/cafe_4.svg" alt="" loading="lazy" />
+                </div>
               </div>
             </div>
-          </div>
-        </article>
-
-        <article class="play-panel play-panel-wide" data-play-panel="silknet">
-          <div class="play-panel-copy">
-            <p class="eyebrow">Environmental sculpture / Spatial concept</p>
-            <h2>Silknet Sympathy</h2>
-            <p>A public sculpture concept for Huzhou, merging tennis and silk-net references into a spatial gesture about fair play, movement, and shared urban energy.</p>
-            <p class="play-hint">This is ready as a visual case now. A rotatable web model can be added once the Rhino/D5 scene is exported as a lightweight GLB.</p>
-          </div>
-          <div class="play-panel-media silknet-gallery">
-            <img src="assets/playground/silknet-scene.jpg" alt="Silknet Sympathy scene render" />
-            <img src="assets/playground/silknet-board.jpg" alt="Silknet Sympathy presentation board" />
           </div>
         </article>
       </div>

@@ -313,7 +313,7 @@ function setupCoffeeBoard() {
   if (!stages.length) return;
 
   stages.forEach((stage) => {
-    const modules = [...stage.querySelectorAll(".coffee-module")];
+    const modules = [...stage.querySelectorAll(".coffee-module, .coffee-svg-layer")];
     const updateModules = () => {
       const stageRect = stage.getBoundingClientRect();
       const focus = stageRect.left + stageRect.width * 0.5;
