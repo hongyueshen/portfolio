@@ -256,6 +256,80 @@ function setupLightbox() {
   document.addEventListener("keydown", (event) => { if (event.key === "Escape") close(); });
 }
 
+function setupPlaygroundModal() {
+  const modal = document.querySelector(".play-modal");
+  if (!modal) return;
+  const panels = [...modal.querySelectorAll(".play-panel")];
+  const closeButton = modal.querySelector(".play-modal-close");
+  const videos = [...modal.querySelectorAll("video")];
+  const sphereVideo = modal.querySelector("#script-murder-sphere-source");
+
+  const stopVideos = () => {
+    videos.forEach((video) => {
+      video.pause();
+      if (!video.closest(".play-card")) video.currentTime = 0;
+    });
+  };
+
+  const close = () => {
+    modal.classList.remove("open");
+    modal.setAttribute("aria-hidden", "true");
+    panels.forEach((panel) => panel.classList.remove("active"));
+    stopVideos();
+  };
+
+  document.querySelectorAll("[data-play-target]").forEach((card) => {
+    const preview = card.querySelector("video");
+    if (preview) {
+      card.addEventListener("pointerenter", () => preview.play().catch(() => {}));
+      card.addEventListener("pointerleave", () => preview.pause());
+    }
+    card.addEventListener("click", () => {
+      const target = card.dataset.playTarget;
+      panels.forEach((panel) => panel.classList.toggle("active", panel.dataset.playPanel === target));
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden", "false");
+      const activePanel = panels.find((panel) => panel.dataset.playPanel === target);
+      activePanel?.querySelectorAll("video").forEach((video) => video.play().catch(() => {}));
+      activePanel?.querySelectorAll(".coffee-stage").forEach((stage) => {
+        stage.scrollLeft = 0;
+        stage.dispatchEvent(new Event("scroll"));
+      });
+      if (target === "script-murder") sphereVideo?.play().catch(() => {});
+    });
+  });
+
+  closeButton?.addEventListener("click", close);
+  modal.addEventListener("click", (event) => {
+    if (event.target === modal) close();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && modal.classList.contains("open")) close();
+  });
+}
+
+function setupCoffeeBoard() {
+  const stages = [...document.querySelectorAll(".coffee-stage")];
+  if (!stages.length) return;
+
+  stages.forEach((stage) => {
+    const modules = [...stage.querySelectorAll(".coffee-module")];
+    const updateModules = () => {
+      const stageRect = stage.getBoundingClientRect();
+      const focus = stageRect.left + stageRect.width * 0.5;
+      modules.forEach((module) => {
+        const rect = module.getBoundingClientRect();
+        const center = rect.left + rect.width * 0.5;
+        const distance = Math.abs(center - focus);
+        module.classList.toggle("active", distance < stageRect.width * 0.34);
+      });
+    };
+    stage.addEventListener("scroll", updateModules, { passive: true });
+    window.addEventListener("resize", updateModules);
+    updateModules();
+  });
+}
+
 function setupFilters() {
   const buttons = document.querySelectorAll(".filter-button");
   const tiles = document.querySelectorAll(".work-tile");
@@ -331,5 +405,7 @@ document.querySelectorAll("[data-year]").forEach((item) => { item.textContent = 
 setupMenu();
 setupFilters();
 setupLightbox();
+setupPlaygroundModal();
+setupCoffeeBoard();
 setupCursor();
 setupReveals();

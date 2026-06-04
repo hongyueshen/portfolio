@@ -1,0 +1,18 @@
+# Local browser QA artifacts
+.chrome-qa*/
+.edge-qa*/
+preview-*.png
+qa-*.png
+qa-*.jpg
+material_review/
+github-upload/
+github-update/
+github-update-v3/
+github-update-v4/
+github-update-v5/
+github-update-v6/
+github-update-v7/
+
+# OS files
+.DS_Store
+Thumbs.db
