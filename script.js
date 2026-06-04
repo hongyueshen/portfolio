@@ -51,16 +51,27 @@ function buildMatrix(matrix) {
   if (matrix.dataset.interactive === "true") {
     const spans = [...matrix.querySelectorAll(".matrix-letter")];
     const eventTarget = matrix.closest("[data-matrix-zone]") || matrix.parentElement || matrix;
+    let frame = null;
+    let pointer = { x: 0, y: 0 };
     if (matrix.matrixPointerMove) matrix.matrixEventTarget?.removeEventListener("pointermove", matrix.matrixPointerMove);
     if (matrix.matrixPointerLeave) matrix.matrixEventTarget?.removeEventListener("pointerleave", matrix.matrixPointerLeave);
     matrix.matrixPointerMove = (event) => {
-      spans.forEach((span) => {
-        const rect = span.getBoundingClientRect();
-        const distance = Math.hypot(event.clientX - (rect.left + rect.width / 2), event.clientY - (rect.top + rect.height / 2));
-        span.classList.toggle("is-near", distance < 105);
+      pointer = { x: event.clientX, y: event.clientY };
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        spans.forEach((span) => {
+          const rect = span.getBoundingClientRect();
+          const distance = Math.hypot(pointer.x - (rect.left + rect.width / 2), pointer.y - (rect.top + rect.height / 2));
+          span.classList.toggle("is-near", distance < 112);
+        });
+        frame = null;
       });
     };
-    matrix.matrixPointerLeave = () => spans.forEach((span) => span.classList.remove("is-near"));
+    matrix.matrixPointerLeave = () => {
+      if (frame) cancelAnimationFrame(frame);
+      frame = null;
+      spans.forEach((span) => span.classList.remove("is-near"));
+    };
     matrix.matrixEventTarget = eventTarget;
     eventTarget.addEventListener("pointermove", matrix.matrixPointerMove);
     eventTarget.addEventListener("pointerleave", matrix.matrixPointerLeave);
@@ -106,7 +117,7 @@ const projectData = {
   },
   "bell-ross": {
     number: "004",
-    title: "Bell & Ross",
+    title: "Folding Time",
     type: "Campaign Invitation",
     services: "Art Direction · Editorial Invitation · Motion Asset",
     year: "2025",
@@ -115,9 +126,9 @@ const projectData = {
     concept: "The system uses paper folds, watch geometry, and restrained contrast to turn an invitation into a tactile brand moment across print, digital, and motion.",
     media: [
       "assets/work/bellross01.jpg",
+      "assets/work/bellross03.jpg",
       "assets/work/bellross02.jpg",
       { type: "video", src: "assets/video/bell-ross-invitation.mp4", caption: "Bell & Ross · Invitation motion" },
-      "assets/work/bellross03.jpg",
       "assets/work/bellross04.jpg",
       "assets/work/bellross05.jpg"
     ],
@@ -137,7 +148,7 @@ const projectData = {
   },
   xiaoxi: {
     number: "006",
-    title: "Xiao Xi",
+    title: "XiaoXi Rice Wine",
     type: "Brand Identity",
     services: "Art Direction · Packaging · Print Assets",
     year: "2025",
@@ -161,16 +172,28 @@ const projectData = {
   }
 };
 
-function renderMediaItem(item, project, index) {
+function getGalleryLayouts(media) {
+  const layouts = Array.from({ length: media.length }, () => "pair");
+  if (media.length % 2 === 1) layouts[0] = "wide";
+  media.forEach((item, index) => {
+    if (typeof item === "object" && item.layout) layouts[index] = item.layout;
+  });
+  return layouts;
+}
+
+function renderMediaItem(item, project, index, layout = "pair") {
   const image = typeof item === "string" ? item : item.src;
-  const caption = typeof item === "string" ? `${project.title} · Visual ${String(index + 1).padStart(2,"0")}` : item.caption;
+  const layoutClass = layout === "wide" ? " gallery-item-wide" : layout === "third" ? " gallery-item-third" : "";
+  const caption = typeof item === "string"
+    ? `${project.title} · Visual ${String(index + 1).padStart(2,"0")}`
+    : (item.caption || `${project.title} · Visual ${String(index + 1).padStart(2,"0")}`).replace("Bell & Ross", project.title);
   if (typeof item === "object" && item.type === "video") {
-    return `<div class="gallery-item gallery-video reveal">
+    return `<div class="gallery-item gallery-video${layoutClass} reveal">
       <video controls playsinline preload="metadata" src="${item.src}"></video>
       <p>${caption}</p>
     </div>`;
   }
-  return `<button class="gallery-item reveal" type="button" data-lightbox="${image}" data-caption="${caption}">
+  return `<button class="gallery-item${layoutClass} reveal" type="button" data-lightbox="${image}" data-caption="${caption}">
     <img src="${image}" alt="${project.title} visual ${index + 1}" loading="lazy" />
   </button>`;
 }
@@ -182,6 +205,7 @@ function renderProject() {
   const slug = params.get("slug") || params.get("id") || "scape";
   const project = projectData[slug] || projectData.scape;
   const next = projectData[project.next];
+  const galleryLayouts = getGalleryLayouts(project.media);
   document.title = `${project.title} | Hongyue Shen`;
   root.innerHTML = `
     <section class="project-hero">
@@ -202,7 +226,7 @@ function renderProject() {
     </section>
     <section class="project-gallery">
       <div class="gallery-grid">
-        ${project.media.map((item, index) => renderMediaItem(item, project, index)).join("")}
+        ${project.media.map((item, index) => renderMediaItem(item, project, index, galleryLayouts[index])).join("")}
       </div>
     </section>
     <a class="project-next" href="project.html?slug=${project.next}"><b>Next project</b><span>${next.title} &rarr;</span></a>`;
