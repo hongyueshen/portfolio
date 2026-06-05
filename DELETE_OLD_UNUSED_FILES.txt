@@ -1,0 +1,9 @@
+﻿Old files you can delete from the GitHub repository if they were uploaded in v9:
+assets/playground/cafe_1.svg
+assets/playground/cafe_2.svg
+assets/playground/cafe_3.svg
+assets/playground/cafe_4.svg
+assets/playground/silknet-board.jpg
+assets/playground/silknet-scene.jpg
+assets/playground/silknet-thumb.png
+assets/video/lady-diana.mp4

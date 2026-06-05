@@ -263,6 +263,9 @@ function setupPlaygroundModal() {
   const closeButton = modal.querySelector(".play-modal-close");
   const videos = [...modal.querySelectorAll("video")];
   const sphereVideo = modal.querySelector("#script-murder-sphere-source");
+  const panoramaScene = modal.querySelector(".panorama-frame a-scene");
+  const panoramaFrame = modal.querySelector(".panorama-frame");
+  if (!window.AFRAME) panoramaFrame?.classList.add("no-aframe");
 
   const stopVideos = () => {
     videos.forEach((video) => {
@@ -292,10 +295,16 @@ function setupPlaygroundModal() {
       const activePanel = panels.find((panel) => panel.dataset.playPanel === target);
       activePanel?.querySelectorAll("video").forEach((video) => video.play().catch(() => {}));
       activePanel?.querySelectorAll(".coffee-stage").forEach((stage) => {
-        stage.scrollLeft = 0;
-        stage.dispatchEvent(new Event("scroll"));
+        stage.dataset.step = "0";
+        stage.dispatchEvent(new Event("coffee:update"));
       });
-      if (target === "script-murder") sphereVideo?.play().catch(() => {});
+      if (target === "script-murder") {
+        sphereVideo?.play().catch(() => {});
+        window.setTimeout(() => {
+          panoramaScene?.resize?.();
+          panoramaScene?.components?.renderer?.resize?.();
+        }, 180);
+      }
     });
   });
 
@@ -313,20 +322,59 @@ function setupCoffeeBoard() {
   if (!stages.length) return;
 
   stages.forEach((stage) => {
-    const modules = [...stage.querySelectorAll(".coffee-module, .coffee-svg-layer")];
-    const updateModules = () => {
-      const stageRect = stage.getBoundingClientRect();
-      const focus = stageRect.left + stageRect.width * 0.5;
-      modules.forEach((module) => {
-        const rect = module.getBoundingClientRect();
-        const center = rect.left + rect.width * 0.5;
-        const distance = Math.abs(center - focus);
-        module.classList.toggle("active", distance < stageRect.width * 0.34);
+    const modules = [...stage.querySelectorAll(".coffee-module-piece")];
+    const progress = stage.querySelector(".coffee-progress");
+    let startX = null;
+    let wheelLocked = false;
+
+    modules.forEach((module) => {
+      const image = module.querySelector("img");
+      const x = Number.parseFloat(module.style.left);
+      const y = Number.parseFloat(module.style.top);
+      const width = Number.parseFloat(module.style.width);
+      const height = Number.parseFloat(module.style.height);
+      image.style.width = `${100 / width * 100}%`;
+      image.style.height = `${100 / height * 100}%`;
+      image.style.left = `${-x / width * 100}%`;
+      image.style.top = `${-y / height * 100}%`;
+    });
+
+    const setStep = (nextStep) => {
+      const step = Math.max(0, Math.min(modules.length - 1, nextStep));
+      stage.dataset.step = String(step);
+      modules.forEach((module, index) => {
+        module.classList.toggle("active", index <= step);
+        module.classList.toggle("current", index === step);
       });
+      if (progress) progress.textContent = `${String(step + 1).padStart(2, "0")} / ${String(modules.length).padStart(2, "0")}`;
     };
-    stage.addEventListener("scroll", updateModules, { passive: true });
-    window.addEventListener("resize", updateModules);
-    updateModules();
+
+    const move = (direction) => setStep(Number(stage.dataset.step || 0) + direction);
+
+    stage.addEventListener("coffee:update", () => setStep(Number(stage.dataset.step || 0)));
+    stage.addEventListener("wheel", (event) => {
+      event.preventDefault();
+      if (wheelLocked) return;
+      wheelLocked = true;
+      const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+      move(delta > 0 ? 1 : -1);
+      window.setTimeout(() => { wheelLocked = false; }, 220);
+    }, { passive: false });
+    stage.addEventListener("pointerdown", (event) => {
+      startX = event.clientX;
+      stage.setPointerCapture?.(event.pointerId);
+    });
+    stage.addEventListener("pointerup", (event) => {
+      if (startX === null) return;
+      const delta = event.clientX - startX;
+      if (Math.abs(delta) > 34) move(delta < 0 ? 1 : -1);
+      startX = null;
+    });
+    stage.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowRight") move(1);
+      if (event.key === "ArrowLeft") move(-1);
+    });
+    setStep(0);
   });
 }
 
