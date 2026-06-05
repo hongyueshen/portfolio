@@ -163,27 +163,38 @@
       (() => {
         const bindCoffeeDrag = () => {
           document.querySelectorAll('.coffee-stage').forEach((stage) => {
-            if (stage.dataset.dragBound === 'true') return;
-            stage.dataset.dragBound = 'true';
+            if (stage.dataset.dragBound === 'stable') return;
+            stage.dataset.dragBound = 'stable';
             let dragging = false;
-            let startX = 0;
-            let startScroll = 0;
+            let lastX = 0;
+            const dragSpeed = 1.75;
 
-            const stop = () => { dragging = false; };
+            const stop = (event) => {
+              if (!dragging) return;
+              dragging = false;
+              if (event) event.stopImmediatePropagation();
+            };
+
             stage.addEventListener('pointerdown', (event) => {
+              event.preventDefault();
+              event.stopImmediatePropagation();
               dragging = true;
-              startX = event.clientX;
-              startScroll = stage.scrollLeft;
+              lastX = event.clientX;
               stage.setPointerCapture?.(event.pointerId);
-            });
+            }, true);
+
             stage.addEventListener('pointermove', (event) => {
               if (!dragging) return;
               event.preventDefault();
-              stage.scrollLeft = startScroll - (event.clientX - startX);
-            }, { passive: false });
-            stage.addEventListener('pointerup', stop);
-            stage.addEventListener('pointercancel', stop);
-            stage.addEventListener('lostpointercapture', stop);
+              event.stopImmediatePropagation();
+              const delta = lastX - event.clientX;
+              stage.scrollLeft += delta * dragSpeed;
+              lastX = event.clientX;
+            }, true);
+
+            stage.addEventListener('pointerup', stop, true);
+            stage.addEventListener('pointercancel', stop, true);
+            stage.addEventListener('lostpointercapture', stop, true);
           });
         };
 
