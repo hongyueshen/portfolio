@@ -161,21 +161,32 @@
     <script src="script.js"></script>
     <script>
       (() => {
+        const syncDot = (event) => {
+          const dot = document.querySelector('.cursor-dot');
+          if (!dot) return;
+          dot.style.left = `${event.clientX}px`;
+          dot.style.top = `${event.clientY}px`;
+        };
+
         const bindCoffeeDrag = () => {
           document.querySelectorAll('.coffee-stage').forEach((stage) => {
             if (stage.dataset.dragBound === 'stable') return;
             stage.dataset.dragBound = 'stable';
             let dragging = false;
             let lastX = 0;
-            const dragSpeed = 1.75;
+            const dragSpeed = 3.2;
 
             const stop = (event) => {
               if (!dragging) return;
               dragging = false;
-              if (event) event.stopImmediatePropagation();
+              if (event) {
+                syncDot(event);
+                event.stopImmediatePropagation();
+              }
             };
 
             stage.addEventListener('pointerdown', (event) => {
+              syncDot(event);
               event.preventDefault();
               event.stopImmediatePropagation();
               dragging = true;
@@ -184,6 +195,7 @@
             }, true);
 
             stage.addEventListener('pointermove', (event) => {
+              syncDot(event);
               if (!dragging) return;
               event.preventDefault();
               event.stopImmediatePropagation();
