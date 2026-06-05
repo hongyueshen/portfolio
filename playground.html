@@ -8,6 +8,31 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
+    <style>
+      .cursor-dot { z-index: 1000; }
+      .play-panel[data-play-panel="coffee-map"] {
+        grid-template-columns: minmax(260px,.55fr) minmax(0,1.45fr);
+        gap: clamp(22px,4vw,58px);
+        padding: clamp(28px,4vw,62px);
+      }
+      .play-panel[data-play-panel="coffee-map"] .play-panel-copy {
+        display: block;
+        max-width: 520px;
+      }
+      .play-panel[data-play-panel="coffee-map"] .play-panel-copy h2 {
+        margin-bottom: 18px;
+        font-size: clamp(40px,5.5vw,82px);
+      }
+      .play-panel[data-play-panel="coffee-map"] .play-panel-copy p {
+        margin-bottom: 0;
+      }
+      @media (max-width: 760px) {
+        .play-panel[data-play-panel="coffee-map"] {
+          grid-template-columns: 1fr;
+          padding: 24px;
+        }
+      }
+    </style>
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   </head>
   <body>
@@ -108,12 +133,12 @@
           </div>
         </article>
 
-        <article class="play-panel play-panel-wide" data-play-panel="coffee-map">
-          <div class="play-panel-copy" style="display:block;max-width:960px;">
+        <article class="play-panel" data-play-panel="coffee-map">
+          <div class="play-panel-copy">
             <p class="eyebrow">Information design / Cultural comparison</p>
-            <h2 style="margin:0 0 14px;">Coffee Culture</h2>
-            <p style="max-width:760px;margin-bottom:12px;">A comparative information-design board mapping how coffee culture shifts between Shanghai and Paris through history, consumption habits, shop typologies, and social rituals.</p>
-            <p class="play-hint" style="margin-top:0;">Swipe, drag, or scroll inside the board to reveal each information module.</p>
+            <h2>Coffee Culture</h2>
+            <p>A comparative information-design board mapping how coffee culture shifts between Shanghai and Paris through history, consumption habits, shop typologies, and social rituals.</p>
+            <p class="play-hint">Swipe, drag, or scroll inside the board to reveal each information module.</p>
           </div>
           <div class="play-panel-media coffee-frame">
             <div class="coffee-stage" tabindex="0" aria-label="Scrollable Coffee Culture information design board">
