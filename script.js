@@ -83,7 +83,7 @@ const projectData = {
     number: "001",
     title: "SCAPE",
     type: "Hospitality Branding",
-    services: "Art Direction 路 Brand Identity 路 Digital & Print Assets",
+    services: "Art Direction / Brand Identity / Digital & Print Assets",
     year: "2025",
     thumbnail: "assets/work/scape08.jpg",
     context: "SCAPE is a hospitality identity created around emotional immersion and the quiet pleasure of escape. The project explores how a flexible visual system can move from atmosphere to application without losing its sense of calm.",
@@ -95,7 +95,7 @@ const projectData = {
     number: "002",
     title: "Luminous Fair",
     type: "Cultural Event Campaign",
-    services: "Art Direction 路 Campaign Visuals 路 Environmental Graphics",
+    services: "Art Direction / Campaign Visuals / Environmental Graphics",
     year: "2025",
     thumbnail: "assets/work/deng08.jpg",
     context: "Luminous Fair is a contemporary lantern festival concept celebrating local culture through food, light, and community gathering. It brings a familiar seasonal ritual into a vivid and welcoming visual world.",
@@ -107,7 +107,7 @@ const projectData = {
     number: "003",
     title: "Hands Across Borders",
     type: "Editorial Storytelling",
-    services: "Editorial Design 路 Photography Direction 路 Visual Storytelling",
+    services: "Editorial Design / Photography Direction / Visual Storytelling",
     year: "2025",
     thumbnail: "assets/work/hands-hero.jpg",
     context: "Hands Across Borders is an editorial narrative about gestures as a language beyond borders. It observes how hands can communicate care, disagreement, memory, support, and connection before words arrive.",
@@ -119,7 +119,7 @@ const projectData = {
     number: "004",
     title: "Folding Time",
     type: "Campaign Invitation",
-    services: "Art Direction 路 Editorial Invitation 路 Motion Asset",
+    services: "Art Direction / Editorial Invitation / Motion Asset",
     year: "2025",
     thumbnail: "assets/work/bellross-thumbnail.jpg",
     context: "A limited-edition invitation concept for Bell & Ross, shaped around precision, folding time, and the quiet tension between technical instrument and personal ritual.",
@@ -128,7 +128,7 @@ const projectData = {
       "assets/work/bellross01.jpg",
       "assets/work/bellross03.jpg",
       "assets/work/bellross02.jpg",
-      { type: "video", src: "assets/video/bell-ross-invitation.mp4", caption: "Bell & Ross 路 Invitation motion" },
+      { type: "video", src: "assets/video/bell-ross-invitation.mp4", caption: "Bell & Ross / Invitation motion" },
       "assets/work/bellross04.jpg",
       "assets/work/bellross05.jpg"
     ],
@@ -138,7 +138,7 @@ const projectData = {
     number: "005",
     title: "Club Med: The New Frontiers",
     type: "Speculative Travel Experience",
-    services: "Art Direction 路 Digital Experience 路 AI Visualization",
+    services: "Art Direction / Digital Experience / AI Visualization",
     year: "2025",
     thumbnail: "assets/work/cm-thumbnail.jpg",
     context: "A future-facing Club Med concept exploring how travel can feel more personal, immersive, and emotionally intelligent through digital service design.",
@@ -150,7 +150,7 @@ const projectData = {
     number: "006",
     title: "XiaoXi Rice Wine",
     type: "Brand Identity",
-    services: "Art Direction 路 Packaging 路 Print Assets",
+    services: "Art Direction / Packaging / Print Assets",
     year: "2025",
     thumbnail: "assets/work/xiaoxi-thumbnail.jpg",
     context: "Xiao Xi is a soft and refined identity system built around small rituals, quiet warmth, and an approachable visual language.",
@@ -162,7 +162,7 @@ const projectData = {
     number: "007",
     title: "DXOMARK",
     type: "Professional Practice",
-    services: "Brand Systems 路 Campaign Visuals 路 Digital Design",
+    services: "Brand Systems / Campaign Visuals / Digital Design",
     year: "2026",
     thumbnail: "assets/work/dxomark-thumbnail.jpg",
     context: "At DXOMARK, I contribute to cross-platform B2B and B2C communication across digital channels. This selection brings together work produced within an established brand context and adapted to different audiences and formats.",
@@ -185,8 +185,8 @@ function renderMediaItem(item, project, index, layout = "pair") {
   const image = typeof item === "string" ? item : item.src;
   const layoutClass = layout === "wide" ? " gallery-item-wide" : layout === "third" ? " gallery-item-third" : "";
   const caption = typeof item === "string"
-    ? `${project.title} 路 Visual ${String(index + 1).padStart(2,"0")}`
-    : (item.caption || `${project.title} 路 Visual ${String(index + 1).padStart(2,"0")}`).replace("Bell & Ross", project.title);
+    ? `${project.title} / Visual ${String(index + 1).padStart(2,"0")}`
+    : (item.caption || `${project.title} / Visual ${String(index + 1).padStart(2,"0")}`).replace("Bell & Ross", project.title);
   if (typeof item === "object" && item.type === "video") {
     return `<div class="gallery-item gallery-video${layoutClass} reveal">
       <video controls playsinline preload="metadata" src="${item.src}"></video>
@@ -388,6 +388,9 @@ function setupMenu() {
 function setupCursor() {
   const cursor = document.querySelector(".cursor-dot");
   if (!cursor) return;
+  const cursorStyle = document.createElement("style");
+  cursorStyle.textContent = "@media (hover: hover) and (pointer: fine) { *, *::before, *::after { cursor: none !important; } }";
+  document.head.appendChild(cursorStyle);
   document.addEventListener("pointermove", (event) => {
     cursor.style.left = `${event.clientX}px`;
     cursor.style.top = `${event.clientY}px`;
