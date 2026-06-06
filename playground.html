@@ -8,140 +8,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
-    <style>
-      .cursor-dot { z-index: 1000; }
-      .play-modal-dialog.coffee-dialog,
-      .play-modal-dialog:has(.play-panel[data-play-panel="coffee-map"].active) {
-        height: min(920px,92vh);
-        max-height: 92vh;
-        overflow: hidden;
-      }
-      .play-panel[data-play-panel="coffee-map"] {
-        box-sizing: border-box;
-        grid-template-columns: minmax(240px,.42fr) minmax(0,1.58fr);
-        grid-template-rows: minmax(0,1fr);
-        gap: clamp(16px,2.8vw,42px);
-        height: 100%;
-        padding: clamp(24px,3vw,44px);
-        overflow: hidden;
-      }
-      .play-panel[data-play-panel="coffee-map"] .play-panel-copy {
-        display: block;
-        align-self: start;
-        max-width: 500px;
-        min-width: 0;
-      }
-      .play-panel[data-play-panel="coffee-map"] .play-panel-copy h2 {
-        margin-bottom: 16px;
-        font-size: clamp(36px,4.8vw,72px);
-      }
-      .play-panel[data-play-panel="coffee-map"] .play-panel-copy p {
-        margin-bottom: 0;
-      }
-      .play-panel[data-play-panel="coffee-map"] .play-hint {
-        margin-top: 18px;
-      }
-      .coffee-frame {
-        display: block;
-        align-self: stretch;
-        height: 100% !important;
-        min-height: 0 !important;
-        overflow: hidden !important;
-        background: white;
-      }
-      .coffee-sequence {
-        display: flex;
-        align-items: stretch;
-        gap: 0;
-        width: 100%;
-        height: 100%;
-        min-height: 0;
-        padding: 0;
-        overflow-x: auto;
-        overflow-y: hidden;
-        overscroll-behavior-x: contain;
-        overscroll-behavior-y: none;
-        -webkit-overflow-scrolling: touch;
-        touch-action: pan-x;
-        scroll-snap-type: x mandatory;
-        scroll-behavior: auto;
-        background: white;
-        outline: none;
-        cursor: grab;
-        scrollbar-color: var(--pink) rgba(35,35,77,.1);
-        scrollbar-width: thin;
-      }
-      .coffee-sequence.is-dragging {
-        cursor: grabbing;
-      }
-      .coffee-sequence::-webkit-scrollbar {
-        height: 10px;
-      }
-      .coffee-sequence::-webkit-scrollbar-track {
-        background: rgba(35,35,77,.08);
-      }
-      .coffee-sequence::-webkit-scrollbar-thumb {
-        background: var(--pink);
-      }
-      .coffee-section {
-        box-sizing: border-box;
-        display: grid;
-        flex: 0 0 100%;
-        align-items: center;
-        justify-items: center;
-        min-width: 0;
-        height: 100%;
-        min-height: 0;
-        margin: 0;
-        padding: 0;
-        border: 0;
-        background: white;
-        opacity: 1;
-        transform: none;
-        scroll-snap-align: center;
-        content-visibility: auto;
-        contain-intrinsic-size: 900px 640px;
-      }
-      .coffee-section.is-visible {
-        box-shadow: none;
-      }
-      .coffee-section img {
-        display: block;
-        width: 100%;
-        max-width: 100%;
-        height: 100%;
-        max-height: 100%;
-        object-fit: contain;
-        user-select: none;
-        -webkit-user-drag: none;
-        pointer-events: none;
-      }
-      @media (max-width: 760px) {
-        .play-modal-dialog.coffee-dialog,
-        .play-modal-dialog:has(.play-panel[data-play-panel="coffee-map"].active) {
-          height: 92vh;
-        }
-        .play-panel[data-play-panel="coffee-map"] {
-          grid-template-columns: 1fr;
-          grid-template-rows: auto minmax(0,1fr);
-          gap: 12px;
-          padding: 18px;
-        }
-        .play-panel[data-play-panel="coffee-map"] .play-panel-copy {
-          max-width: none;
-        }
-        .play-panel[data-play-panel="coffee-map"] .play-panel-copy h2 {
-          margin-bottom: 8px;
-          font-size: clamp(30px,10vw,46px);
-        }
-        .play-panel[data-play-panel="coffee-map"] .play-panel-copy p:not(.eyebrow):not(.play-hint) {
-          display: none;
-        }
-        .play-panel[data-play-panel="coffee-map"] .play-hint {
-          margin-top: 10px;
-        }
-      }
-    </style>
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   </head>
   <body>
@@ -168,21 +34,21 @@
 
       <section class="section playground-section">
         <div class="play-masonry">
-          <button class="play-card play-card-wide reveal" type="button" data-play-target="script-murder">
-            <video muted loop playsinline preload="metadata" src="assets/video/script-murder-360.mp4"></video>
-            <span>Immersive Script-Murder Theatre</span>
+          <button class="play-card play-card-large play-card-contain reveal" type="button" data-play-target="one-third-life">
+            <img src="assets/playground/one-third-life-thumb.png" alt="1/3life zine visual" />
+            <span>1/3 of life</span>
           </button>
           <button class="play-card play-card-tall play-card-contain reveal" type="button" data-play-target="living-land">
             <video muted loop playsinline preload="metadata" src="assets/video/living-land-foundation.mp4"></video>
             <span>Diana / Living Land</span>
           </button>
-          <button class="play-card play-card-large reveal" type="button" data-play-target="coffee-map">
+          <button class="play-card play-card-wide reveal" type="button" data-play-target="script-murder">
+            <video muted loop playsinline preload="metadata" src="assets/video/script-murder-360.mp4"></video>
+            <span>Immersive Script-Murder Theatre</span>
+          </button>
+          <button class="play-card play-card-coffee reveal" type="button" data-play-target="coffee-map">
             <img src="assets/playground/coffee-comparison.png" alt="Coffee in Shanghai information design board" />
             <span>Coffee Culture</span>
-          </button>
-          <button class="play-card play-card-coffee play-card-contain reveal" type="button" data-play-target="one-third-life">
-            <img src="assets/playground/one-third-life-thumb.png" alt="1/3life zine visual" />
-            <span>1/3 of life</span>
           </button>
         </div>
       </section>
@@ -242,27 +108,22 @@
           </div>
         </article>
 
-        <article class="play-panel" data-play-panel="coffee-map">
+        <article class="play-panel play-panel-wide" data-play-panel="coffee-map">
           <div class="play-panel-copy">
             <p class="eyebrow">Information design / Cultural comparison</p>
             <h2>Coffee Culture</h2>
             <p>A comparative information-design board mapping how coffee culture shifts between Shanghai and Paris through history, consumption habits, shop typologies, and social rituals.</p>
-            <p class="play-hint">Swipe or drag left and right through the Coffee Culture sections.</p>
+            <p class="play-hint">Swipe, drag, or scroll inside the board to reveal each information module.</p>
           </div>
           <div class="play-panel-media coffee-frame">
-            <div class="coffee-sequence" tabindex="0" aria-label="Coffee Culture information design sections" role="list">
-              <figure class="coffee-section is-visible" role="listitem">
-                <img src="assets/playground/cafe_1.svg" alt="Coffee Culture information design section 1" loading="lazy" decoding="async" />
-              </figure>
-              <figure class="coffee-section" role="listitem">
-                <img src="assets/playground/cafe_2.svg" alt="Coffee Culture information design section 2" loading="lazy" decoding="async" />
-              </figure>
-              <figure class="coffee-section" role="listitem">
-                <img src="assets/playground/cafe_3.svg" alt="Coffee Culture information design section 3" loading="lazy" decoding="async" />
-              </figure>
-              <figure class="coffee-section" role="listitem">
-                <img src="assets/playground/cafe_4.svg" alt="Coffee Culture information design section 4" loading="lazy" decoding="async" />
-              </figure>
+            <div class="coffee-stage coffee-svg-stage" tabindex="0" aria-label="Coffee Culture full SVG boards">
+              <div class="coffee-svg-strip">
+                <img class="coffee-svg-board" src="assets/playground/cafe_1.svg" alt="Coffee Culture information design board 1" />
+                <img class="coffee-svg-board" src="assets/playground/cafe_2.svg" alt="Coffee Culture information design board 2" />
+                <img class="coffee-svg-board" src="assets/playground/cafe_3.svg" alt="Coffee Culture information design board 3" />
+                <img class="coffee-svg-board" src="assets/playground/cafe_4.svg" alt="Coffee Culture information design board 4" />
+              </div>
+              <div class="coffee-progress">Swipe sideways to view the full SVG boards</div>
             </div>
           </div>
         </article>
@@ -270,102 +131,5 @@
     </div>
 
     <script src="script.js"></script>
-    <script>
-      (() => {
-        const dialog = document.querySelector('.play-modal-dialog');
-        const setInitialState = (sections) => {
-          sections.forEach((section, index) => {
-            section.classList.toggle('is-visible', index === 0);
-          });
-        };
-
-        const setupCoffeeSequence = () => {
-          const sequence = document.querySelector('.coffee-sequence');
-          if (!sequence) return;
-          const sections = [...sequence.querySelectorAll('.coffee-section')];
-          if (!sections.length) return;
-
-          if (sequence.dataset.sequenceBound === 'true') {
-            return;
-          }
-          sequence.dataset.sequenceBound = 'true';
-          setInitialState(sections);
-
-          if ('IntersectionObserver' in window) {
-            const observer = new IntersectionObserver((entries) => {
-              entries.forEach((entry) => {
-                entry.target.classList.toggle('is-visible', entry.isIntersecting);
-              });
-            }, { root: sequence, threshold: 0.55, rootMargin: '0px -18% 0px -18%' });
-            sections.forEach((section) => observer.observe(section));
-          } else {
-            sections.forEach((section) => section.classList.add('is-visible'));
-          }
-
-          let isDragging = false;
-          let dragStartX = 0;
-          let startScrollLeft = 0;
-
-          sequence.addEventListener('pointerdown', (event) => {
-            if (event.pointerType !== 'mouse' || event.button !== 0) return;
-            isDragging = true;
-            dragStartX = event.clientX;
-            startScrollLeft = sequence.scrollLeft;
-            sequence.classList.add('is-dragging');
-            sequence.setPointerCapture?.(event.pointerId);
-          });
-
-          sequence.addEventListener('pointermove', (event) => {
-            if (!isDragging) return;
-            const deltaX = event.clientX - dragStartX;
-            sequence.scrollLeft = startScrollLeft - deltaX;
-            event.preventDefault();
-          });
-
-          const stopDragging = () => {
-            if (!isDragging) return;
-            isDragging = false;
-            sequence.classList.remove('is-dragging');
-          };
-
-          sequence.addEventListener('pointerup', stopDragging);
-          sequence.addEventListener('pointercancel', stopDragging);
-          sequence.addEventListener('lostpointercapture', stopDragging);
-        };
-
-        const resetCoffeeSequence = () => {
-          const sequence = document.querySelector('.coffee-sequence');
-          if (!sequence) return;
-          sequence.scrollLeft = 0;
-          setInitialState([...sequence.querySelectorAll('.coffee-section')]);
-        };
-
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', setupCoffeeSequence);
-        } else {
-          setupCoffeeSequence();
-        }
-
-        document.addEventListener('click', (event) => {
-          const playTarget = event.target.closest('[data-play-target]');
-          if (playTarget) {
-            dialog?.classList.toggle('coffee-dialog', playTarget.dataset.playTarget === 'coffee-map');
-          }
-          if (event.target.closest('.play-modal-close') || event.target.classList.contains('play-modal')) {
-            dialog?.classList.remove('coffee-dialog');
-          }
-          if (event.target.closest('[data-play-target="coffee-map"]')) {
-            window.setTimeout(() => {
-              setupCoffeeSequence();
-              resetCoffeeSequence();
-            }, 0);
-          }
-        });
-
-        document.addEventListener('keydown', (event) => {
-          if (event.key === 'Escape') dialog?.classList.remove('coffee-dialog');
-        });
-      })();
-    </script>
   </body>
 </html>
