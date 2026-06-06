@@ -42,7 +42,7 @@ img { display: block; max-width: 100%; }
 .site-nav a:hover::after, .site-nav a.active::after { transform: scaleX(1); transform-origin: left; }
 .nav-contact { margin-left: 10px; color: var(--pink); }
 .menu-toggle { display: none; border: 0; background: transparent; }
-.cursor-dot { position: fixed; z-index: 9999; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; background: var(--pink); transform: translate(-50%,-50%); transition: width .2s,height .2s; }
+.cursor-dot { position: fixed; z-index: 2147483647; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; background: var(--pink); box-shadow: 0 0 0 6px rgba(255,36,127,.08); transform: translate(-50%,-50%); transition: width .2s,height .2s,opacity .16s; }
 .cursor-dot.large { width: 26px; height: 26px; background: rgba(255,36,127,.42); }
 
 .hero { position: relative; min-height: calc(100svh - 74px); padding: 12vh var(--edge) 60px; overflow: hidden; display: flex; align-items: center; }
@@ -166,7 +166,7 @@ h2 { margin-bottom: 20px; font-size: clamp(35px,4.4vw,68px); font-weight: 700; l
 .play-placeholder .placeholder-mark { position: static; color: var(--pink); font-size: 60px; font-weight: 200; text-shadow: none; transition: transform .35s; }
 .play-placeholder:hover .placeholder-mark { transform: rotate(45deg); }
 .play-placeholder > span:last-child { color: var(--ink-soft); text-shadow: none; }
-.play-masonry { display: grid; grid-template-columns: 1.08fr .92fr; grid-template-areas: "script script" "living zine" "living coffee"; gap: 0; border-top: 1px solid rgba(35,35,77,.1); border-left: 1px solid rgba(35,35,77,.1); }
+.play-masonry { display: grid; grid-template-columns: 1.08fr .92fr; grid-template-areas: "script script" "living coffee" "living zine"; gap: 0; border-top: 1px solid rgba(35,35,77,.1); border-left: 1px solid rgba(35,35,77,.1); }
 .play-card { position: relative; min-height: clamp(330px,34vw,520px); padding: 0; overflow: hidden; border: 0; border-right: 1px solid rgba(35,35,77,.1); border-bottom: 1px solid rgba(35,35,77,.1); cursor: pointer; background: var(--paper-deep); text-align: left; }
 .play-card-large { grid-area: zine; min-height: clamp(260px,22vw,360px); }
 .play-card-tall { grid-area: living; min-height: clamp(520px,44vw,720px); }
@@ -265,12 +265,12 @@ h2 { margin-bottom: 20px; font-size: clamp(35px,4.4vw,68px); font-weight: 700; l
 .panorama-fallback { display: none !important; width: 100%; height: 620px; min-height: 420px; object-fit: contain; background: #0d0d1c; }
 .panorama-frame.no-aframe a-scene { display: none; }
 .panorama-frame.no-aframe .panorama-fallback { display: block !important; }
-.coffee-frame { display: grid; place-items: center; overflow: hidden; background: white; }
-.coffee-stage { display: grid; place-items: center; width: 100%; height: min(74vh, 720px); min-height: 560px; overflow: hidden; outline: none; background: white; touch-action: pan-y; cursor: grab; }
+.coffee-frame { display: grid; place-items: stretch; height: min(70vh, 680px); min-height: 520px; overflow: hidden; background: white; }
+.coffee-stage { display: grid; place-items: center; width: 100%; height: 100%; min-height: 0; overflow: hidden; outline: none; background: white; touch-action: pan-y; cursor: grab; }
 .coffee-stage:active { cursor: grabbing; }
-.coffee-svg-stage { position: relative; box-sizing: border-box; display: block; overflow-x: auto; overflow-y: hidden; padding: 18px 18px 44px; touch-action: pan-x; scroll-snap-type: x proximity; }
+.coffee-svg-stage { position: relative; box-sizing: border-box; display: block; overflow-x: auto; overflow-y: hidden; padding: 18px 18px 44px; touch-action: pan-x; scroll-snap-type: x proximity; overscroll-behavior: contain; }
 .coffee-svg-strip { display: flex; align-items: center; gap: 18px; width: max-content; height: 100%; }
-.coffee-svg-board { display: block; width: auto; max-width: none; height: 100%; object-fit: contain; scroll-snap-align: center; background: white; box-shadow: 0 18px 60px rgba(35,35,77,.1); }
+.coffee-svg-board { display: block; flex: 0 0 auto; width: auto; max-width: none; height: 100%; object-fit: contain; scroll-snap-align: center; background: white; box-shadow: 0 18px 60px rgba(35,35,77,.1); }
 .coffee-board { position: relative; width: min(100%, calc((74vh - 2px) * 2.657)); max-width: 100%; aspect-ratio: 2870 / 1080; overflow: hidden; background: white; }
 .coffee-board-ghost { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: .055; transition: opacity .35s ease; }
 .coffee-stage.is-complete .coffee-board-ghost { opacity: 1; }

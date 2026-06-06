@@ -380,6 +380,41 @@ function setupCoffeeBoard() {
   });
 }
 
+function setupCoffeeSvgBoards() {
+  document.querySelectorAll(".coffee-svg-stage").forEach((stage) => {
+    let dragging = false;
+    let startX = 0;
+    let startScroll = 0;
+
+    stage.addEventListener("wheel", (event) => {
+      event.preventDefault();
+      const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+      stage.scrollLeft += delta;
+    }, { passive: false });
+
+    stage.addEventListener("pointerdown", (event) => {
+      dragging = true;
+      startX = event.clientX;
+      startScroll = stage.scrollLeft;
+      stage.setPointerCapture?.(event.pointerId);
+    });
+
+    stage.addEventListener("pointermove", (event) => {
+      if (!dragging) return;
+      event.preventDefault();
+      stage.scrollLeft = startScroll - (event.clientX - startX);
+    });
+
+    const stopDragging = () => { dragging = false; };
+    stage.addEventListener("pointerup", stopDragging);
+    stage.addEventListener("pointercancel", stopDragging);
+    stage.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowRight") stage.scrollBy({ left: stage.clientWidth * .72, behavior: "smooth" });
+      if (event.key === "ArrowLeft") stage.scrollBy({ left: -stage.clientWidth * .72, behavior: "smooth" });
+    });
+  });
+}
+
 function setupFilters() {
   const buttons = document.querySelectorAll(".filter-button");
   const tiles = document.querySelectorAll(".work-tile");
@@ -409,10 +444,14 @@ function setupMenu() {
 function setupCursor() {
   const cursor = document.querySelector(".cursor-dot");
   if (!cursor) return;
-  document.addEventListener("pointermove", (event) => {
+  const moveCursor = (event) => {
     cursor.style.left = `${event.clientX}px`;
     cursor.style.top = `${event.clientY}px`;
-  });
+    cursor.style.opacity = "1";
+  };
+  window.addEventListener("pointermove", moveCursor, true);
+  window.addEventListener("mousemove", moveCursor, true);
+  document.addEventListener("pointerover", () => { cursor.style.opacity = "1"; }, true);
   document.querySelectorAll("a,button").forEach((item) => {
     item.addEventListener("pointerenter", () => cursor.classList.add("large"));
     item.addEventListener("pointerleave", () => cursor.classList.remove("large"));
@@ -457,5 +496,6 @@ setupFilters();
 setupLightbox();
 setupPlaygroundModal();
 setupCoffeeBoard();
+setupCoffeeSvgBoards();
 setupCursor();
 setupReveals();
