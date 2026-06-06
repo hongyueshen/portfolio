@@ -35,23 +35,29 @@
         background: white;
       }
       .coffee-sequence {
-        display: grid;
-        gap: clamp(20px,2.2vw,34px);
-        height: min(72vh,720px);
-        min-height: 560px;
+        display: flex;
+        gap: clamp(18px,2vw,30px);
+        height: min(76vh,780px);
+        min-height: 600px;
         padding: clamp(14px,2vw,28px);
-        overflow-x: hidden;
-        overflow-y: auto;
+        overflow-x: auto;
+        overflow-y: hidden;
         overscroll-behavior: contain;
         -webkit-overflow-scrolling: touch;
-        scroll-snap-type: y proximity;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
         background: white;
         outline: none;
+        cursor: grab;
         scrollbar-color: var(--pink) rgba(35,35,77,.1);
         scrollbar-width: thin;
       }
+      .coffee-sequence.is-dragging {
+        cursor: grabbing;
+        scroll-behavior: auto;
+      }
       .coffee-sequence::-webkit-scrollbar {
-        width: 10px;
+        height: 10px;
       }
       .coffee-sequence::-webkit-scrollbar-track {
         background: rgba(35,35,77,.08);
@@ -60,20 +66,23 @@
         background: var(--pink);
       }
       .coffee-section {
+        box-sizing: border-box;
         display: grid;
-        align-items: start;
+        flex: 0 0 100%;
+        align-items: center;
         justify-items: center;
-        min-height: min(92vh,980px);
+        height: 100%;
+        min-width: 0;
         margin: 0;
         padding: clamp(12px,1.8vw,24px);
         border: 1px solid rgba(35,35,77,.1);
         background: white;
         opacity: .28;
-        transform: translateY(16px) scale(.99);
+        transform: translateX(16px) scale(.99);
         transition: opacity .35s ease, transform .35s ease, box-shadow .35s ease;
-        scroll-snap-align: start;
+        scroll-snap-align: center;
         content-visibility: auto;
-        contain-intrinsic-size: 1000px 1400px;
+        contain-intrinsic-size: 900px 640px;
       }
       .coffee-section.is-visible {
         opacity: 1;
@@ -82,11 +91,14 @@
       }
       .coffee-section img {
         display: block;
-        width: min(100%,900px);
+        width: auto;
         max-width: 100%;
-        height: auto;
+        height: 100%;
+        max-height: 100%;
+        object-fit: contain;
         user-select: none;
         -webkit-user-drag: none;
+        pointer-events: none;
       }
       @media (max-width: 760px) {
         .play-panel[data-play-panel="coffee-map"] {
@@ -99,11 +111,7 @@
           padding: 14px;
         }
         .coffee-section {
-          min-height: 520px;
           padding: 10px;
-        }
-        .coffee-section img {
-          width: 100%;
         }
       }
     </style>
@@ -212,7 +220,7 @@
             <p class="eyebrow">Information design / Cultural comparison</p>
             <h2>Coffee Culture</h2>
             <p>A comparative information-design board mapping how coffee culture shifts between Shanghai and Paris through history, consumption habits, shop typologies, and social rituals.</p>
-            <p class="play-hint">Scroll through the right panel to reveal each Coffee Culture section.</p>
+            <p class="play-hint">Swipe left or right through the Coffee Culture sections.</p>
           </div>
           <div class="play-panel-media coffee-frame">
             <div class="coffee-sequence" tabindex="0" aria-label="Coffee Culture information design sections" role="list">
@@ -255,24 +263,58 @@
           sequence.dataset.sequenceBound = 'true';
           setInitialState(sections);
 
-          if (!('IntersectionObserver' in window)) {
+          if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+              entries.forEach((entry) => {
+                entry.target.classList.toggle('is-visible', entry.isIntersecting);
+              });
+            }, { root: sequence, threshold: 0.55, rootMargin: '0px -18% 0px -18%' });
+            sections.forEach((section) => observer.observe(section));
+          } else {
             sections.forEach((section) => section.classList.add('is-visible'));
-            return;
           }
 
-          const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-              entry.target.classList.toggle('is-visible', entry.isIntersecting);
-            });
-          }, { root: sequence, threshold: 0.35, rootMargin: '-10% 0px -18% 0px' });
+          let isDragging = false;
+          let dragStartX = 0;
+          let startScrollLeft = 0;
 
-          sections.forEach((section) => observer.observe(section));
+          sequence.addEventListener('pointerdown', (event) => {
+            if (event.pointerType === 'mouse' && event.button !== 0) return;
+            isDragging = true;
+            dragStartX = event.clientX;
+            startScrollLeft = sequence.scrollLeft;
+            sequence.classList.add('is-dragging');
+            sequence.setPointerCapture?.(event.pointerId);
+          });
+
+          sequence.addEventListener('pointermove', (event) => {
+            if (!isDragging) return;
+            const deltaX = event.clientX - dragStartX;
+            sequence.scrollLeft = startScrollLeft - deltaX;
+            event.preventDefault();
+          });
+
+          const stopDragging = () => {
+            if (!isDragging) return;
+            isDragging = false;
+            sequence.classList.remove('is-dragging');
+          };
+
+          sequence.addEventListener('pointerup', stopDragging);
+          sequence.addEventListener('pointercancel', stopDragging);
+          sequence.addEventListener('lostpointercapture', stopDragging);
+
+          sequence.addEventListener('wheel', (event) => {
+            if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+            sequence.scrollLeft += event.deltaY;
+            event.preventDefault();
+          }, { passive: false });
         };
 
         const resetCoffeeSequence = () => {
           const sequence = document.querySelector('.coffee-sequence');
           if (!sequence) return;
-          sequence.scrollTop = 0;
+          sequence.scrollLeft = 0;
           setInitialState([...sequence.querySelectorAll('.coffee-section')]);
         };
 
