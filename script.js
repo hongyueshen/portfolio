@@ -294,9 +294,7 @@ function setupPlaygroundModal() {
       modal.setAttribute("aria-hidden", "false");
       const activePanel = panels.find((panel) => panel.dataset.playPanel === target);
       activePanel?.querySelectorAll("video").forEach((video) => video.play().catch(() => {}));
-      activePanel?.querySelectorAll(".coffee-image-stage").forEach((stage) => {
-        stage.scrollLeft = 0;
-      });
+      activePanel?.querySelectorAll(".coffee-image-stage").forEach((stage) => resetCoffeeImageStage(stage));
       activePanel?.querySelectorAll(".coffee-stage").forEach((stage) => {
         stage.dataset.step = "0";
         stage.dispatchEvent(new Event("coffee:update"));
@@ -318,6 +316,19 @@ function setupPlaygroundModal() {
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && modal.classList.contains("open")) close();
   });
+}
+
+function resetCoffeeImageStage(stage) {
+  stage.scrollTo({ left: 0, top: 0, behavior: "auto" });
+  stage.scrollLeft = 0;
+  requestAnimationFrame(() => {
+    stage.scrollTo({ left: 0, top: 0, behavior: "auto" });
+    stage.scrollLeft = 0;
+  });
+  window.setTimeout(() => {
+    stage.scrollTo({ left: 0, top: 0, behavior: "auto" });
+    stage.scrollLeft = 0;
+  }, 120);
 }
 
 function setupCoffeeBoard() {
@@ -385,9 +396,13 @@ function setupCoffeeBoard() {
 
 function setupCoffeeImageBoards() {
   document.querySelectorAll(".coffee-image-stage").forEach((stage) => {
+    const image = stage.querySelector(".coffee-panorama-image");
     let dragging = false;
     let startX = 0;
     let startScroll = 0;
+
+    resetCoffeeImageStage(stage);
+    image?.addEventListener("load", () => resetCoffeeImageStage(stage));
 
     stage.addEventListener("wheel", (event) => {
       event.preventDefault();
