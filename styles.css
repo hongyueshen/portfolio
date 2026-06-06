@@ -268,9 +268,10 @@ h2 { margin-bottom: 20px; font-size: clamp(35px,4.4vw,68px); font-weight: 700; l
 .coffee-frame { display: grid; place-items: stretch; height: min(70vh, 680px); min-height: 520px; overflow: hidden; background: white; }
 .coffee-stage { display: grid; place-items: center; width: 100%; height: 100%; min-height: 0; overflow: hidden; outline: none; background: white; touch-action: pan-y; cursor: grab; }
 .coffee-stage:active { cursor: grabbing; }
-.coffee-svg-stage { position: relative; box-sizing: border-box; display: block; overflow-x: auto; overflow-y: hidden; padding: 18px 18px 44px; touch-action: pan-x; scroll-snap-type: x proximity; overscroll-behavior: contain; }
-.coffee-svg-strip { display: flex; align-items: center; gap: 18px; width: max-content; height: 100%; }
-.coffee-svg-board { display: block; flex: 0 0 auto; width: auto; max-width: none; height: 100%; object-fit: contain; scroll-snap-align: center; background: white; box-shadow: 0 18px 60px rgba(35,35,77,.1); }
+.coffee-svg-stage { position: relative; box-sizing: border-box; display: block; overflow-x: auto; overflow-y: hidden; padding: 0; touch-action: pan-x; scroll-snap-type: x mandatory; overscroll-behavior: contain; }
+.coffee-svg-strip { display: flex; align-items: stretch; gap: 0; width: max-content; height: 100%; }
+.coffee-svg-panel { display: grid; flex: 0 0 100%; place-items: center; width: 100%; height: 100%; margin: 0; padding: 18px; scroll-snap-align: start; background: white; }
+.coffee-svg-board { display: block; width: auto; height: auto; max-width: 100%; max-height: 100%; object-fit: contain; background: white; box-shadow: 0 18px 60px rgba(35,35,77,.1); }
 .coffee-board { position: relative; width: min(100%, calc((74vh - 2px) * 2.657)); max-width: 100%; aspect-ratio: 2870 / 1080; overflow: hidden; background: white; }
 .coffee-board-ghost { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: .055; transition: opacity .35s ease; }
 .coffee-stage.is-complete .coffee-board-ghost { opacity: 1; }
