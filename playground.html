@@ -44,8 +44,9 @@
         overflow-y: hidden;
         overscroll-behavior: contain;
         -webkit-overflow-scrolling: touch;
+        touch-action: pan-x;
         scroll-snap-type: x mandatory;
-        scroll-behavior: smooth;
+        scroll-behavior: auto;
         background: white;
         outline: none;
         cursor: grab;
@@ -54,7 +55,6 @@
       }
       .coffee-sequence.is-dragging {
         cursor: grabbing;
-        scroll-behavior: auto;
       }
       .coffee-sequence::-webkit-scrollbar {
         height: 10px;
