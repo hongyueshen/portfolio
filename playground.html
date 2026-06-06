@@ -10,46 +10,59 @@
     <link rel="stylesheet" href="styles.css" />
     <style>
       .cursor-dot { z-index: 1000; }
+      .play-modal-dialog.coffee-dialog,
+      .play-modal-dialog:has(.play-panel[data-play-panel="coffee-map"].active) {
+        height: min(920px,92vh);
+        max-height: 92vh;
+        overflow: hidden;
+      }
       .play-panel[data-play-panel="coffee-map"] {
-        grid-template-columns: minmax(260px,.55fr) minmax(0,1.45fr);
-        gap: clamp(22px,4vw,58px);
-        padding: clamp(28px,4vw,62px);
+        box-sizing: border-box;
+        grid-template-columns: minmax(240px,.42fr) minmax(0,1.58fr);
+        grid-template-rows: minmax(0,1fr);
+        gap: clamp(16px,2.8vw,42px);
+        height: 100%;
+        padding: clamp(24px,3vw,44px);
+        overflow: hidden;
       }
       .play-panel[data-play-panel="coffee-map"] .play-panel-copy {
         display: block;
-        max-width: 520px;
+        align-self: start;
+        max-width: 500px;
+        min-width: 0;
       }
       .play-panel[data-play-panel="coffee-map"] .play-panel-copy h2 {
-        margin-bottom: 18px;
-        font-size: clamp(40px,5.5vw,82px);
+        margin-bottom: 16px;
+        font-size: clamp(36px,4.8vw,72px);
       }
       .play-panel[data-play-panel="coffee-map"] .play-panel-copy p {
         margin-bottom: 0;
       }
       .play-panel[data-play-panel="coffee-map"] .play-hint {
-        margin-top: 20px;
+        margin-top: 18px;
       }
       .coffee-frame {
         display: block;
-        height: auto !important;
+        align-self: stretch;
+        height: 100% !important;
         min-height: 0 !important;
-        overflow: visible !important;
+        overflow: hidden !important;
         background: white;
       }
       .coffee-sequence {
         display: flex;
-        align-items: flex-start;
-        gap: clamp(18px,2vw,30px);
+        align-items: stretch;
+        gap: 0;
         width: 100%;
-        height: auto;
+        height: 100%;
         min-height: 0;
-        padding: clamp(14px,2vw,28px);
+        padding: 0;
         overflow-x: auto;
-        overflow-y: visible;
+        overflow-y: hidden;
         overscroll-behavior-x: contain;
-        overscroll-behavior-y: auto;
+        overscroll-behavior-y: none;
         -webkit-overflow-scrolling: touch;
-        touch-action: pan-x pan-y;
+        touch-action: pan-x;
         scroll-snap-type: x mandatory;
         scroll-behavior: auto;
         background: white;
@@ -74,55 +87,58 @@
         box-sizing: border-box;
         display: grid;
         flex: 0 0 100%;
-        align-items: start;
+        align-items: center;
         justify-items: center;
         min-width: 0;
-        height: auto;
+        height: 100%;
         min-height: 0;
         margin: 0;
-        padding: clamp(12px,1.8vw,24px);
-        border: 1px solid rgba(35,35,77,.1);
+        padding: 0;
+        border: 0;
         background: white;
-        opacity: .28;
-        transform: translateX(16px) scale(.99);
-        transition: opacity .35s ease, transform .35s ease, box-shadow .35s ease;
-        scroll-snap-align: center;
-        content-visibility: auto;
-        contain-intrinsic-size: 900px 1320px;
-      }
-      .coffee-section.is-visible {
         opacity: 1;
         transform: none;
-        box-shadow: 0 20px 70px rgba(35,35,77,.1);
+        scroll-snap-align: center;
+        content-visibility: auto;
+        contain-intrinsic-size: 900px 640px;
+      }
+      .coffee-section.is-visible {
+        box-shadow: none;
       }
       .coffee-section img {
         display: block;
-        width: min(100%,940px);
+        width: 100%;
         max-width: 100%;
-        height: auto;
-        max-height: none;
+        height: 100%;
+        max-height: 100%;
         object-fit: contain;
         user-select: none;
         -webkit-user-drag: none;
         pointer-events: none;
       }
       @media (max-width: 760px) {
+        .play-modal-dialog.coffee-dialog,
+        .play-modal-dialog:has(.play-panel[data-play-panel="coffee-map"].active) {
+          height: 92vh;
+        }
         .play-panel[data-play-panel="coffee-map"] {
           grid-template-columns: 1fr;
-          padding: 24px;
+          grid-template-rows: auto minmax(0,1fr);
+          gap: 12px;
+          padding: 18px;
         }
-        .coffee-frame {
-          height: auto !important;
-          min-height: 0 !important;
+        .play-panel[data-play-panel="coffee-map"] .play-panel-copy {
+          max-width: none;
         }
-        .coffee-sequence {
-          padding: 14px;
+        .play-panel[data-play-panel="coffee-map"] .play-panel-copy h2 {
+          margin-bottom: 8px;
+          font-size: clamp(30px,10vw,46px);
         }
-        .coffee-section {
-          padding: 10px;
+        .play-panel[data-play-panel="coffee-map"] .play-panel-copy p:not(.eyebrow):not(.play-hint) {
+          display: none;
         }
-        .coffee-section img {
-          width: 100%;
+        .play-panel[data-play-panel="coffee-map"] .play-hint {
+          margin-top: 10px;
         }
       }
     </style>
@@ -256,6 +272,7 @@
     <script src="script.js"></script>
     <script>
       (() => {
+        const dialog = document.querySelector('.play-modal-dialog');
         const setInitialState = (sections) => {
           sections.forEach((section, index) => {
             section.classList.toggle('is-visible', index === 0);
@@ -330,12 +347,23 @@
         }
 
         document.addEventListener('click', (event) => {
+          const playTarget = event.target.closest('[data-play-target]');
+          if (playTarget) {
+            dialog?.classList.toggle('coffee-dialog', playTarget.dataset.playTarget === 'coffee-map');
+          }
+          if (event.target.closest('.play-modal-close') || event.target.classList.contains('play-modal')) {
+            dialog?.classList.remove('coffee-dialog');
+          }
           if (event.target.closest('[data-play-target="coffee-map"]')) {
             window.setTimeout(() => {
               setupCoffeeSequence();
               resetCoffeeSequence();
             }, 0);
           }
+        });
+
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape') dialog?.classList.remove('coffee-dialog');
         });
       })();
     </script>
