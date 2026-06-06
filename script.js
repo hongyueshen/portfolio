@@ -294,8 +294,7 @@ function setupPlaygroundModal() {
       modal.setAttribute("aria-hidden", "false");
       const activePanel = panels.find((panel) => panel.dataset.playPanel === target);
       activePanel?.querySelectorAll("video").forEach((video) => video.play().catch(() => {}));
-      activePanel?.querySelectorAll(".coffee-svg-stage").forEach((stage) => {
-        stage.querySelectorAll(".coffee-svg-panel").forEach((panel) => { panel.style.width = `${stage.clientWidth}px`; });
+      activePanel?.querySelectorAll(".coffee-image-stage").forEach((stage) => {
         stage.scrollLeft = 0;
       });
       activePanel?.querySelectorAll(".coffee-stage").forEach((stage) => {
@@ -384,18 +383,11 @@ function setupCoffeeBoard() {
   });
 }
 
-function setupCoffeeSvgBoards() {
-  document.querySelectorAll(".coffee-svg-stage").forEach((stage) => {
-    const panels = [...stage.querySelectorAll(".coffee-svg-panel")];
+function setupCoffeeImageBoards() {
+  document.querySelectorAll(".coffee-image-stage").forEach((stage) => {
     let dragging = false;
     let startX = 0;
     let startScroll = 0;
-
-    const sizePanels = () => {
-      panels.forEach((panel) => { panel.style.width = `${stage.clientWidth}px`; });
-    };
-    sizePanels();
-    window.addEventListener("resize", sizePanels);
 
     stage.addEventListener("wheel", (event) => {
       event.preventDefault();
@@ -507,6 +499,6 @@ setupFilters();
 setupLightbox();
 setupPlaygroundModal();
 setupCoffeeBoard();
-setupCoffeeSvgBoards();
+setupCoffeeImageBoards();
 setupCursor();
 setupReveals();
