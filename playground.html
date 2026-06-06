@@ -26,12 +26,65 @@
       .play-panel[data-play-panel="coffee-map"] .play-panel-copy p {
         margin-bottom: 0;
       }
-      .play-panel[data-play-panel="coffee-map"] .coffee-stage {
-        touch-action: none;
-        overscroll-behavior: contain;
+      .play-panel[data-play-panel="coffee-map"] .play-hint {
+        margin-top: 20px;
       }
-      .play-panel[data-play-panel="coffee-map"] .coffee-full-board {
-        pointer-events: none;
+      .coffee-frame {
+        display: block;
+        overflow: hidden;
+        background: white;
+      }
+      .coffee-sequence {
+        display: grid;
+        gap: clamp(20px,2.2vw,34px);
+        height: min(72vh,720px);
+        min-height: 560px;
+        padding: clamp(14px,2vw,28px);
+        overflow-x: hidden;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: y proximity;
+        background: white;
+        outline: none;
+        scrollbar-color: var(--pink) rgba(35,35,77,.1);
+        scrollbar-width: thin;
+      }
+      .coffee-sequence::-webkit-scrollbar {
+        width: 10px;
+      }
+      .coffee-sequence::-webkit-scrollbar-track {
+        background: rgba(35,35,77,.08);
+      }
+      .coffee-sequence::-webkit-scrollbar-thumb {
+        background: var(--pink);
+      }
+      .coffee-section {
+        display: grid;
+        align-items: start;
+        justify-items: center;
+        min-height: min(92vh,980px);
+        margin: 0;
+        padding: clamp(12px,1.8vw,24px);
+        border: 1px solid rgba(35,35,77,.1);
+        background: white;
+        opacity: .28;
+        transform: translateY(16px) scale(.99);
+        transition: opacity .35s ease, transform .35s ease, box-shadow .35s ease;
+        scroll-snap-align: start;
+        content-visibility: auto;
+        contain-intrinsic-size: 1000px 1400px;
+      }
+      .coffee-section.is-visible {
+        opacity: 1;
+        transform: none;
+        box-shadow: 0 20px 70px rgba(35,35,77,.1);
+      }
+      .coffee-section img {
+        display: block;
+        width: min(100%,900px);
+        max-width: 100%;
+        height: auto;
         user-select: none;
         -webkit-user-drag: none;
       }
@@ -39,6 +92,18 @@
         .play-panel[data-play-panel="coffee-map"] {
           grid-template-columns: 1fr;
           padding: 24px;
+        }
+        .coffee-sequence {
+          height: 520px;
+          min-height: 520px;
+          padding: 14px;
+        }
+        .coffee-section {
+          min-height: 520px;
+          padding: 10px;
+        }
+        .coffee-section img {
+          width: 100%;
         }
       }
     </style>
@@ -147,11 +212,22 @@
             <p class="eyebrow">Information design / Cultural comparison</p>
             <h2>Coffee Culture</h2>
             <p>A comparative information-design board mapping how coffee culture shifts between Shanghai and Paris through history, consumption habits, shop typologies, and social rituals.</p>
-            <p class="play-hint">Swipe, drag, or scroll inside the board to reveal each information module.</p>
+            <p class="play-hint">Scroll through the right panel to reveal each Coffee Culture section.</p>
           </div>
           <div class="play-panel-media coffee-frame">
-            <div class="coffee-stage" tabindex="0" aria-label="Scrollable Coffee Culture information design board">
-              <img class="coffee-full-board" src="assets/playground/coffee-comparison.png" alt="Coffee Culture information design board comparing Shanghai and Paris" />
+            <div class="coffee-sequence" tabindex="0" aria-label="Coffee Culture information design sections" role="list">
+              <figure class="coffee-section is-visible" role="listitem">
+                <img src="assets/playground/cafe_1.svg" alt="Coffee Culture information design section 1" loading="lazy" decoding="async" />
+              </figure>
+              <figure class="coffee-section" role="listitem">
+                <img src="assets/playground/cafe_2.svg" alt="Coffee Culture information design section 2" loading="lazy" decoding="async" />
+              </figure>
+              <figure class="coffee-section" role="listitem">
+                <img src="assets/playground/cafe_3.svg" alt="Coffee Culture information design section 3" loading="lazy" decoding="async" />
+              </figure>
+              <figure class="coffee-section" role="listitem">
+                <img src="assets/playground/cafe_4.svg" alt="Coffee Culture information design section 4" loading="lazy" decoding="async" />
+              </figure>
             </div>
           </div>
         </article>
@@ -161,62 +237,58 @@
     <script src="script.js"></script>
     <script>
       (() => {
-        const syncDot = (event) => {
-          const dot = document.querySelector('.cursor-dot');
-          if (!dot) return;
-          dot.style.left = `${event.clientX}px`;
-          dot.style.top = `${event.clientY}px`;
-        };
-
-        const bindCoffeeDrag = () => {
-          document.querySelectorAll('.coffee-stage').forEach((stage) => {
-            if (stage.dataset.dragBound === 'stable') return;
-            stage.dataset.dragBound = 'stable';
-            let dragging = false;
-            let lastX = 0;
-            const dragSpeed = 3.2;
-
-            const stop = (event) => {
-              if (!dragging) return;
-              dragging = false;
-              if (event) {
-                syncDot(event);
-                event.stopImmediatePropagation();
-              }
-            };
-
-            stage.addEventListener('pointerdown', (event) => {
-              syncDot(event);
-              event.preventDefault();
-              event.stopImmediatePropagation();
-              dragging = true;
-              lastX = event.clientX;
-              stage.setPointerCapture?.(event.pointerId);
-            }, true);
-
-            stage.addEventListener('pointermove', (event) => {
-              syncDot(event);
-              if (!dragging) return;
-              event.preventDefault();
-              event.stopImmediatePropagation();
-              const delta = lastX - event.clientX;
-              stage.scrollLeft += delta * dragSpeed;
-              lastX = event.clientX;
-            }, true);
-
-            stage.addEventListener('pointerup', stop, true);
-            stage.addEventListener('pointercancel', stop, true);
-            stage.addEventListener('lostpointercapture', stop, true);
+        const setInitialState = (sections) => {
+          sections.forEach((section, index) => {
+            section.classList.toggle('is-visible', index === 0);
           });
         };
 
+        const setupCoffeeSequence = () => {
+          const sequence = document.querySelector('.coffee-sequence');
+          if (!sequence) return;
+          const sections = [...sequence.querySelectorAll('.coffee-section')];
+          if (!sections.length) return;
+
+          if (sequence.dataset.sequenceBound === 'true') {
+            return;
+          }
+          sequence.dataset.sequenceBound = 'true';
+          setInitialState(sections);
+
+          if (!('IntersectionObserver' in window)) {
+            sections.forEach((section) => section.classList.add('is-visible'));
+            return;
+          }
+
+          const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+              entry.target.classList.toggle('is-visible', entry.isIntersecting);
+            });
+          }, { root: sequence, threshold: 0.35, rootMargin: '-10% 0px -18% 0px' });
+
+          sections.forEach((section) => observer.observe(section));
+        };
+
+        const resetCoffeeSequence = () => {
+          const sequence = document.querySelector('.coffee-sequence');
+          if (!sequence) return;
+          sequence.scrollTop = 0;
+          setInitialState([...sequence.querySelectorAll('.coffee-section')]);
+        };
+
         if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', bindCoffeeDrag);
+          document.addEventListener('DOMContentLoaded', setupCoffeeSequence);
         } else {
-          bindCoffeeDrag();
+          setupCoffeeSequence();
         }
+
         document.addEventListener('click', (event) => {
-          if (event.target.closest('[data-play-target="coffee-map"]')) window.setTimeout(bindCoffeeDrag, 0);
+          if (event.target.closest('[data-play-target="coffee-map"]')) {
+            window.setTimeout(() => {
+              setupCoffeeSequence();
+              resetCoffeeSequence();
+            }, 0);
+          }
         });
       })();
     </script>
