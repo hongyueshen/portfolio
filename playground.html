@@ -31,20 +31,25 @@
       }
       .coffee-frame {
         display: block;
-        overflow: hidden;
+        height: auto !important;
+        min-height: 0 !important;
+        overflow: visible !important;
         background: white;
       }
       .coffee-sequence {
         display: flex;
+        align-items: flex-start;
         gap: clamp(18px,2vw,30px);
-        height: min(76vh,780px);
-        min-height: 600px;
+        width: 100%;
+        height: auto;
+        min-height: 0;
         padding: clamp(14px,2vw,28px);
         overflow-x: auto;
-        overflow-y: hidden;
-        overscroll-behavior: contain;
+        overflow-y: visible;
+        overscroll-behavior-x: contain;
+        overscroll-behavior-y: auto;
         -webkit-overflow-scrolling: touch;
-        touch-action: pan-x;
+        touch-action: pan-x pan-y;
         scroll-snap-type: x mandatory;
         scroll-behavior: auto;
         background: white;
@@ -69,10 +74,11 @@
         box-sizing: border-box;
         display: grid;
         flex: 0 0 100%;
-        align-items: center;
+        align-items: start;
         justify-items: center;
-        height: 100%;
         min-width: 0;
+        height: auto;
+        min-height: 0;
         margin: 0;
         padding: clamp(12px,1.8vw,24px);
         border: 1px solid rgba(35,35,77,.1);
@@ -82,7 +88,7 @@
         transition: opacity .35s ease, transform .35s ease, box-shadow .35s ease;
         scroll-snap-align: center;
         content-visibility: auto;
-        contain-intrinsic-size: 900px 640px;
+        contain-intrinsic-size: 900px 1320px;
       }
       .coffee-section.is-visible {
         opacity: 1;
@@ -91,10 +97,10 @@
       }
       .coffee-section img {
         display: block;
-        width: auto;
+        width: min(100%,940px);
         max-width: 100%;
-        height: 100%;
-        max-height: 100%;
+        height: auto;
+        max-height: none;
         object-fit: contain;
         user-select: none;
         -webkit-user-drag: none;
@@ -105,13 +111,18 @@
           grid-template-columns: 1fr;
           padding: 24px;
         }
+        .coffee-frame {
+          height: auto !important;
+          min-height: 0 !important;
+        }
         .coffee-sequence {
-          height: 520px;
-          min-height: 520px;
           padding: 14px;
         }
         .coffee-section {
           padding: 10px;
+        }
+        .coffee-section img {
+          width: 100%;
         }
       }
     </style>
@@ -220,7 +231,7 @@
             <p class="eyebrow">Information design / Cultural comparison</p>
             <h2>Coffee Culture</h2>
             <p>A comparative information-design board mapping how coffee culture shifts between Shanghai and Paris through history, consumption habits, shop typologies, and social rituals.</p>
-            <p class="play-hint">Swipe left or right through the Coffee Culture sections.</p>
+            <p class="play-hint">Swipe or drag left and right through the Coffee Culture sections.</p>
           </div>
           <div class="play-panel-media coffee-frame">
             <div class="coffee-sequence" tabindex="0" aria-label="Coffee Culture information design sections" role="list">
@@ -279,7 +290,7 @@
           let startScrollLeft = 0;
 
           sequence.addEventListener('pointerdown', (event) => {
-            if (event.pointerType === 'mouse' && event.button !== 0) return;
+            if (event.pointerType !== 'mouse' || event.button !== 0) return;
             isDragging = true;
             dragStartX = event.clientX;
             startScrollLeft = sequence.scrollLeft;
@@ -303,12 +314,6 @@
           sequence.addEventListener('pointerup', stopDragging);
           sequence.addEventListener('pointercancel', stopDragging);
           sequence.addEventListener('lostpointercapture', stopDragging);
-
-          sequence.addEventListener('wheel', (event) => {
-            if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
-            sequence.scrollLeft += event.deltaY;
-            event.preventDefault();
-          }, { passive: false });
         };
 
         const resetCoffeeSequence = () => {
