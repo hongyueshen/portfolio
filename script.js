@@ -167,7 +167,16 @@ const projectData = {
     thumbnail: "assets/work/lamina04.png",
     context: "LAMINA is a botanical soap brand proposal conceived and produced within 48 hours. The project explores how a compact identity system can communicate natural ingredients, sensory qualities, and a clear product hierarchy under an accelerated creative timeline.",
     concept: "Inspired by the meaning of lamina—a thin plate or layer—the identity turns botanical structures into an archival system. Folder-like tabs, specimen codes, and line illustrations organize wood, leaf, and flower into three distinct sensory families.",
-    media: ["assets/work/lamina10.png","assets/work/lamina02.png","assets/work/lamina03.png","assets/work/lamina04.png","assets/work/lamina05.png","assets/work/lamina06.png","assets/work/lamina07.png","assets/work/lamina08.png"],
+    media: [
+      { src: "assets/work/lamina10.png", layout: "wide" },
+      "assets/work/lamina02.png",
+      "assets/work/lamina03.png",
+      { src: "assets/work/lamina04.png", layout: "wide" },
+      "assets/work/lamina05.png",
+      "assets/work/lamina06.png",
+      "assets/work/lamina07.png",
+      "assets/work/lamina08.png"
+    ],
     next: "dxomark"
   },
   dxomark: {
