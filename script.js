@@ -156,10 +156,22 @@ const projectData = {
     context: "Xiao Xi is a soft and refined identity system built around small rituals, quiet warmth, and an approachable visual language.",
     concept: "A restrained palette, delicate typography, and tactile applications create a brand world that feels intimate, giftable, and gently memorable.",
     media: ["assets/work/xiaoxi01.jpg","assets/work/xiaoxi02.jpg","assets/work/xiaoxi03.jpg","assets/work/xiaoxi04.jpg","assets/work/xiaoxi05.jpg"],
+    next: "lamina"
+  },
+  lamina: {
+    number: "007",
+    title: "LAMINA",
+    type: "Brand Identity & Packaging Proposal",
+    services: "Art Direction · Brand Identity · Packaging Design",
+    year: "2026",
+    thumbnail: "assets/work/lamina04.png",
+    context: "LAMINA is a botanical soap brand proposal conceived and produced within 48 hours. The project explores how a compact identity system can communicate natural ingredients, sensory qualities, and a clear product hierarchy under an accelerated creative timeline.",
+    concept: "Inspired by the meaning of lamina—a thin plate or layer—the identity turns botanical structures into an archival system. Folder-like tabs, specimen codes, and line illustrations organize wood, leaf, and flower into three distinct sensory families.",
+    media: ["assets/work/lamina10.png","assets/work/lamina02.png","assets/work/lamina03.png","assets/work/lamina04.png","assets/work/lamina05.png","assets/work/lamina06.png","assets/work/lamina07.png","assets/work/lamina08.png"],
     next: "dxomark"
   },
   dxomark: {
-    number: "007",
+    number: "008",
     title: "DXOMARK",
     type: "Professional Practice",
     services: "Brand Systems · Campaign Visuals · Digital Design",
