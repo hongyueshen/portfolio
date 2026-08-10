@@ -1,6 +1,6 @@
 # Hongyue Shen Portfolio
 
-An open-source static portfolio website for Hongyue Shen, a Paris-based brand and visual designer.
+An open-source static portfolio website for Hongyue Shen, a brand and visual designer.
 
 ## Features
 

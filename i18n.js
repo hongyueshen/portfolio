@@ -3,7 +3,7 @@
   const copy = {
     zh: {
       "nav.home": "首页", "nav.work": "作品", "nav.playground": "实验场", "nav.about": "关于", "nav.connect": "联系我",
-      "home.hero.eyebrow": "巴黎 / 品牌与视觉设计师",
+      "home.hero.eyebrow": "品牌与视觉设计师",
       "home.hero.title": "设计身份<br />与<em>体验。</em>",
       "home.hero.subtitle": "品牌 / 编辑设计 / 活动视觉 / 动态 / 数字体验",
       "home.hero.ctaWork": "查看精选作品 <span>&rarr;</span>",
@@ -56,7 +56,7 @@
       "play.modal.coffee.body": "一个比较上海与巴黎咖啡文化的信息设计展板，观察历史、消费习惯、店铺类型与社交仪式的差异。",
       "about.hero.eyebrow": "03 / 关于",
       "about.hero.title": "用系统<br />建构<em>故事。</em>",
-      "about.hero.body": "我是一名常驻巴黎的品牌与视觉设计师，经验横跨奢侈品零售、编辑媒体与数字活动。我喜欢把想法转化为清晰、有表达力，并能在不同格式中保持生命力的视觉系统。",
+      "about.hero.body": "我是一名品牌与视觉设计师，经验横跨奢侈品零售、编辑媒体与数字活动。我喜欢把想法转化为清晰、有表达力，并能在不同格式中保持生命力的视觉系统。",
       "about.hero.email": "给我写邮件 <span>&rarr;</span>", "about.hero.cv": "下载简历 <span>&rarr;</span>",
       "about.experience.eyebrow": "经历", "about.experience.now": "2026 - 至今",
       "about.experience.role1": "品牌设计师", "about.experience.role2": "视觉陈列",
@@ -73,7 +73,7 @@
     },
     fr: {
       "nav.home": "Accueil", "nav.work": "Projets", "nav.playground": "Playground", "nav.about": "À propos", "nav.connect": "Contact",
-      "home.hero.eyebrow": "Basée à Paris / Designer de marque et visuelle",
+      "home.hero.eyebrow": "Designer de marque et visuelle",
       "home.hero.title": "Concevoir des identités<br />et des <em>expériences.</em>",
       "home.hero.subtitle": "Branding / Éditorial / Campagnes / Motion / Digital",
       "home.hero.ctaWork": "Voir les projets sélectionnés <span>&rarr;</span>",
@@ -123,7 +123,7 @@
       "play.modal.coffee.body": "Un panneau comparant la culture du café à Shanghai et à Paris à travers l'histoire, les habitudes, les lieux et les rituels sociaux.",
       "about.hero.eyebrow": "03 / À propos",
       "about.hero.title": "Construire des histoires<br />par les <em>systèmes.</em>",
-      "about.hero.body": "Je suis designer de marque et visuelle basée à Paris, avec une expérience dans le retail de luxe, les médias éditoriaux et les campagnes digitales. J'aime transformer les idées en systèmes visuels clairs, expressifs et vivants à travers les formats.",
+      "about.hero.body": "Je suis designer de marque et visuelle, avec une expérience dans le retail de luxe, les médias éditoriaux et les campagnes digitales. J'aime transformer les idées en systèmes visuels clairs, expressifs et vivants à travers les formats.",
       "about.hero.email": "M'écrire <span>&rarr;</span>", "about.hero.cv": "Télécharger le CV <span>&rarr;</span>",
       "about.experience.eyebrow": "Expérience", "about.experience.now": "2026 - Aujourd'hui",
       "about.experience.role1": "Brand Designer", "about.experience.role2": "Visual Merchandiser",
